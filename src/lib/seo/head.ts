@@ -9,7 +9,7 @@ export const SEO_LANGS: Lang[] = ["en", "fr", "ar"];
  */
 export function hreflangLinks(pathAfterLang: string) {
   const tail = pathAfterLang && !pathAfterLang.startsWith("/") ? `/${pathAfterLang}` : pathAfterLang;
-  const links = SEO_LANGS.map((l) => ({
+  const links: { rel: string; hreflang: string; href: string }[] = SEO_LANGS.map((l) => ({
     rel: "alternate",
     hreflang: l,
     href: `${SITE_ORIGIN}/${l}${tail}`,
