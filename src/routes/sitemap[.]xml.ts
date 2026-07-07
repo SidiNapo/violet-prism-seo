@@ -5,7 +5,10 @@ export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async ({ request }) => {
-        const origin = new URL(request.url).origin;
+        const host = new URL(request.url).host;
+        const origin = host.includes("e-seomax.com") || host.includes("localhost")
+          ? "https://e-seomax.com"
+          : new URL(request.url).origin;
         const supabase = createClient(
           process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL!,
           process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY!,

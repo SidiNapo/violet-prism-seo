@@ -85,7 +85,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "E-SeoMax" },
+      { property: "og:url", content: "https://e-seomax.com" },
+      { property: "og:locale", content: "en_US" },
+      { property: "og:locale:alternate", content: "fr_FR" },
+      { property: "og:locale:alternate", content: "ar" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@eseomax" },
+      { name: "theme-color", content: "#0a0014" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -100,6 +106,34 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "E-SeoMax",
+          url: "https://e-seomax.com",
+          logo: "https://e-seomax.com/favicon.ico",
+          sameAs: [],
+          description: "Algorithmic SEO intelligence platform with 8 tools running fully in-browser.",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "E-SeoMax",
+          url: "https://e-seomax.com",
+          inLanguage: ["en", "fr", "ar"],
+        }),
+      },
+      {
+        children:
+          "try{document.documentElement.classList.add('dark')}catch(e){}",
       },
     ],
     scripts: [
