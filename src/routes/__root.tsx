@@ -136,12 +136,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "try{document.documentElement.classList.add('dark')}catch(e){}",
       },
     ],
-    scripts: [
-      {
-        children:
-          "try{document.documentElement.classList.add('dark')}catch(e){}",
-      },
-    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
