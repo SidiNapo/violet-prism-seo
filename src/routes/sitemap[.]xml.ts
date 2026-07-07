@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createClient } from "@supabase/supabase-js";
+import { TOOLS } from "@/lib/tools-catalog";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
@@ -20,9 +21,12 @@ export const Route = createFileRoute("/sitemap.xml")({
         const langs = ["en", "fr", "ar"];
         const staticPaths = ["", "/tools", "/blog", "/about", "/contact"];
         const urls: string[] = [];
-        for (const l of langs)
+        for (const l of langs) {
           for (const p of staticPaths)
             urls.push(`<url><loc>${origin}/${l}${p}</loc><changefreq>weekly</changefreq></url>`);
+          for (const t of TOOLS)
+            urls.push(`<url><loc>${origin}/${l}/tools/${t.slug}</loc><changefreq>monthly</changefreq></url>`);
+        }
         for (const r of (data as { slug: string; lang: string; updated_at: string }[]) || []) {
           urls.push(`<url><loc>${origin}/${r.lang}/blog/${r.slug}</loc><lastmod>${r.updated_at.slice(0, 10)}</lastmod></url>`);
         }
@@ -32,3 +36,4 @@ export const Route = createFileRoute("/sitemap.xml")({
     },
   },
 });
+
