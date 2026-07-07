@@ -1,13 +1,16 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useI18n } from "@/i18n/context";
 import { supabase } from "@/integrations/supabase/client";
 import { renderMarkdown } from "@/lib/markdown";
+import { hreflangLinks, ogLocale } from "@/lib/seo/head";
+import type { Lang } from "@/i18n/dictionaries";
 
 type Post = {
   id: string; slug: string; lang: string; title: string; excerpt: string; content: string;
   cover_image_url: string | null; meta_title: string | null; meta_description: string | null;
-  keywords: string[]; author_name: string; published_at: string | null; reading_minutes: number;
+  keywords: string[]; author_name: string; published_at: string | null;
+  updated_at: string; reading_minutes: number;
 };
 
 export const Route = createFileRoute("/$lang/blog/$slug")({
@@ -15,23 +18,26 @@ export const Route = createFileRoute("/$lang/blog/$slug")({
   loader: async ({ params }) => {
     const { data } = await supabase
       .from("posts")
-      .select("title,excerpt,cover_image_url,meta_title,meta_description,author_name,published_at,updated_at")
+      .select("id,slug,lang,title,excerpt,content,cover_image_url,meta_title,meta_description,keywords,author_name,published_at,updated_at,reading_minutes")
       .eq("slug", params.slug)
       .eq("lang", params.lang)
       .eq("status", "published")
       .maybeSingle();
-    return { seo: data as {
-      title: string; excerpt: string; cover_image_url: string | null;
-      meta_title: string | null; meta_description: string | null;
-      author_name: string; published_at: string | null; updated_at: string;
-    } | null };
+    if (!data) throw notFound();
+    return { post: data as Post };
   },
   head: ({ params, loaderData }) => {
-    const seo = loaderData?.seo;
-    const title = seo?.meta_title || (seo?.title ? `${seo.title} — E-SeoMax` : `${params.slug} — E-SeoMax`);
-    const description = (seo?.meta_description || seo?.excerpt || "Long-form thinking on algorithmic SEO from the E-SeoMax team.").slice(0, 160);
-    const url = `https://e-seomax.com/${params.lang}/blog/${params.slug}`;
-    const image = seo?.cover_image_url || undefined;
+    const lang = params.lang as Lang;
+    const post = loaderData?.post;
+    if (!post) {
+      return {
+        meta: [{ title: "Not found — E-SeoMax" }, { name: "robots", content: "noindex" }],
+      };
+    }
+    const title = post.meta_title || `${post.title} — E-SeoMax`;
+    const description = (post.meta_description || post.excerpt || "").slice(0, 160);
+    const path = `/${params.lang}/blog/${params.slug}`;
+    const image = post.cover_image_url || undefined;
     return {
       meta: [
         { title },
@@ -39,61 +45,65 @@ export const Route = createFileRoute("/$lang/blog/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "article" },
-        { property: "og:url", content: `/${params.lang}/blog/${params.slug}` },
-        ...(image ? [{ property: "og:image", content: image }, { name: "twitter:image", content: image }] : []),
+        { property: "og:url", content: path },
+        { property: "og:locale", content: ogLocale(lang) },
+        ...(image
+          ? [
+              { property: "og:image", content: image },
+              { name: "twitter:image", content: image },
+            ]
+          : []),
       ],
-      links: [{ rel: "canonical", href: `/${params.lang}/blog/${params.slug}` }],
-      scripts: seo
-        ? [
-            {
-              type: "application/ld+json",
-              children: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "Article",
-                headline: seo.title,
-                description,
-                author: { "@type": "Person", name: seo.author_name },
-                datePublished: seo.published_at,
-                dateModified: seo.updated_at,
-                image: image ? [image] : undefined,
-                mainEntityOfPage: url,
-                inLanguage: params.lang,
-              }),
-            },
-          ]
-        : [],
+      links: [
+        { rel: "canonical", href: path },
+        ...hreflangLinks(`/blog/${params.slug}`),
+      ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: post.title,
+            description,
+            author: { "@type": "Person", name: post.author_name },
+            datePublished: post.published_at,
+            dateModified: post.updated_at,
+            image: image ? [image] : undefined,
+            mainEntityOfPage: path,
+            inLanguage: lang,
+          }),
+        },
+      ],
     };
   },
+  notFoundComponent: PostNotFound,
 });
 
+function PostNotFound() {
+  const { lang, t } = useI18n();
+  return (
+    <div className="mx-auto max-w-3xl px-4 py-32 text-center">
+      <div className="font-display text-6xl gradient-text">404</div>
+      <p className="mt-3 text-mist">{t.blog.empty}</p>
+      <Link to={`/${lang}/blog`} className="mt-6 inline-block text-amethyst-glow">← {t.blog.back}</Link>
+    </div>
+  );
+}
 
 function BlogDetail() {
-  const { slug, lang } = Route.useParams();
+  const { lang, slug } = Route.useParams();
+  const { post } = Route.useLoaderData();
   const { t } = useI18n();
-  const [post, setPost] = useState<Post | null | "missing">(null);
-  const [html, setHtml] = useState("");
+  const html = useMemo(() => renderMarkdown(post.content), [post.content]);
 
   useEffect(() => {
-    let alive = true;
-    (async () => {
-      const { data } = await supabase.from("posts").select("*").eq("slug", slug).eq("lang", lang).eq("status", "published").maybeSingle();
-      if (!alive) return;
-      if (!data) { setPost("missing"); return; }
-      setPost(data as Post);
-      setHtml(renderMarkdown((data as Post).content));
-      supabase.rpc("increment_post_views", { _slug: slug, _lang: lang });
-    })();
-    return () => { alive = false; };
+    // fire-and-forget view increment; do not block render
+    supabase.rpc("increment_post_views", { _slug: slug, _lang: lang }).then(
+      () => {},
+      () => {},
+    );
   }, [slug, lang]);
-
-  if (post === "missing") {
-    return <div className="mx-auto max-w-3xl px-4 py-32 text-center">
-      <div className="font-display text-6xl gradient-text">404</div>
-      <p className="mt-3 text-mist">Post not found.</p>
-      <Link to={`/${lang}/blog`} className="mt-6 inline-block text-amethyst-glow">← {t.blog.back}</Link>
-    </div>;
-  }
-  if (!post) return <div className="mx-auto max-w-3xl px-4 py-16"><div className="crystal-card h-96 animate-pulse" /></div>;
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-16">
@@ -105,7 +115,15 @@ function BlogDetail() {
         <span>{post.reading_minutes} {t.blog.readingTime}</span>
         {post.published_at && <><span>·</span><span>{new Date(post.published_at).toISOString().slice(0, 10)}</span></>}
       </div>
-      {post.cover_image_url && <img src={post.cover_image_url} alt="" className="mt-8 w-full rounded-2xl aspect-video object-cover" />}
+      {post.cover_image_url && (
+        <img
+          src={post.cover_image_url}
+          alt=""
+          width={1200}
+          height={675}
+          className="mt-8 w-full rounded-2xl aspect-video object-cover"
+        />
+      )}
       <div
         className="mt-10 space-y-5 text-crystal-white/90 leading-relaxed"
         style={{ fontSize: "1.05rem" }}
