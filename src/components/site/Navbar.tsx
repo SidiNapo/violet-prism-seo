@@ -19,7 +19,6 @@ export function Navbar() {
   const items = [
     { to: `/${lang}/tools`, label: t.nav.tools },
     { to: `/${lang}/blog`, label: t.nav.blog },
-    { to: `/${lang}/pricing`, label: t.nav.pricing },
     { to: `/${lang}/about`, label: t.nav.about },
     { to: `/${lang}/contact`, label: t.nav.contact },
   ];

@@ -91,7 +91,7 @@ function Home() {
               return (
                 <Link
                   key={slug}
-                  to={`/${lang}/tools`}
+                  to={`/${lang}/tools/${slug}`}
                   className="crystal-card crystal-card-hover p-5 group"
                 >
                   <div
