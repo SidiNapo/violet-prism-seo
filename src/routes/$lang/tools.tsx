@@ -47,8 +47,8 @@ function ToolsHub() {
               </div>
               <div className="mt-4 font-display text-xl">{meta.name}</div>
               <p className="mt-1 text-sm text-mist">{meta.tagline}</p>
-              <div className="mt-4 text-xs font-mono uppercase tracking-widest text-warning-amber">
-                {t.toolsHub.comingSoon}
+              <div className="mt-4 text-xs font-mono uppercase tracking-widest text-amethyst-glow">
+                {t.cta.tryNow} →
               </div>
             </Link>
           );
