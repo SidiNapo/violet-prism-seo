@@ -13,7 +13,6 @@ import { Route as LangRouteRouteImport } from './routes/$lang/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as LangToolsRouteImport } from './routes/$lang/tools'
-import { Route as LangPricingRouteImport } from './routes/$lang/pricing'
 import { Route as LangContactRouteImport } from './routes/$lang/contact'
 import { Route as LangBlogRouteImport } from './routes/$lang/blog'
 import { Route as LangAboutRouteImport } from './routes/$lang/about'
@@ -38,11 +37,6 @@ const LangToolsRoute = LangToolsRouteImport.update({
   path: '/tools',
   getParentRoute: () => LangRouteRoute,
 } as any)
-const LangPricingRoute = LangPricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => LangRouteRoute,
-} as any)
 const LangContactRoute = LangContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -65,7 +59,6 @@ export interface FileRoutesByFullPath {
   '/$lang/about': typeof LangAboutRoute
   '/$lang/blog': typeof LangBlogRoute
   '/$lang/contact': typeof LangContactRoute
-  '/$lang/pricing': typeof LangPricingRoute
   '/$lang/tools': typeof LangToolsRoute
   '/$lang/': typeof LangIndexRoute
 }
@@ -74,7 +67,6 @@ export interface FileRoutesByTo {
   '/$lang/about': typeof LangAboutRoute
   '/$lang/blog': typeof LangBlogRoute
   '/$lang/contact': typeof LangContactRoute
-  '/$lang/pricing': typeof LangPricingRoute
   '/$lang/tools': typeof LangToolsRoute
   '/$lang': typeof LangIndexRoute
 }
@@ -85,7 +77,6 @@ export interface FileRoutesById {
   '/$lang/about': typeof LangAboutRoute
   '/$lang/blog': typeof LangBlogRoute
   '/$lang/contact': typeof LangContactRoute
-  '/$lang/pricing': typeof LangPricingRoute
   '/$lang/tools': typeof LangToolsRoute
   '/$lang/': typeof LangIndexRoute
 }
@@ -97,7 +88,6 @@ export interface FileRouteTypes {
     | '/$lang/about'
     | '/$lang/blog'
     | '/$lang/contact'
-    | '/$lang/pricing'
     | '/$lang/tools'
     | '/$lang/'
   fileRoutesByTo: FileRoutesByTo
@@ -106,7 +96,6 @@ export interface FileRouteTypes {
     | '/$lang/about'
     | '/$lang/blog'
     | '/$lang/contact'
-    | '/$lang/pricing'
     | '/$lang/tools'
     | '/$lang'
   id:
@@ -116,7 +105,6 @@ export interface FileRouteTypes {
     | '/$lang/about'
     | '/$lang/blog'
     | '/$lang/contact'
-    | '/$lang/pricing'
     | '/$lang/tools'
     | '/$lang/'
   fileRoutesById: FileRoutesById
@@ -156,13 +144,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangToolsRouteImport
       parentRoute: typeof LangRouteRoute
     }
-    '/$lang/pricing': {
-      id: '/$lang/pricing'
-      path: '/pricing'
-      fullPath: '/$lang/pricing'
-      preLoaderRoute: typeof LangPricingRouteImport
-      parentRoute: typeof LangRouteRoute
-    }
     '/$lang/contact': {
       id: '/$lang/contact'
       path: '/contact'
@@ -191,7 +172,6 @@ interface LangRouteRouteChildren {
   LangAboutRoute: typeof LangAboutRoute
   LangBlogRoute: typeof LangBlogRoute
   LangContactRoute: typeof LangContactRoute
-  LangPricingRoute: typeof LangPricingRoute
   LangToolsRoute: typeof LangToolsRoute
   LangIndexRoute: typeof LangIndexRoute
 }
@@ -200,7 +180,6 @@ const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangAboutRoute: LangAboutRoute,
   LangBlogRoute: LangBlogRoute,
   LangContactRoute: LangContactRoute,
-  LangPricingRoute: LangPricingRoute,
   LangToolsRoute: LangToolsRoute,
   LangIndexRoute: LangIndexRoute,
 }
@@ -216,13 +195,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

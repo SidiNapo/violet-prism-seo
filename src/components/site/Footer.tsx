@@ -27,7 +27,6 @@ export function Footer() {
           <h4 className="text-xs uppercase tracking-widest text-mist mb-3">{t.footer.product}</h4>
           <ul className="space-y-2 text-sm">
             <li><Link to={`/${lang}/tools`} className="hover:text-amethyst-glow">{t.nav.tools}</Link></li>
-            <li><Link to={`/${lang}/pricing`} className="hover:text-amethyst-glow">{t.nav.pricing}</Link></li>
           </ul>
         </div>
 
