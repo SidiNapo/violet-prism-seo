@@ -4,9 +4,11 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { htmlDir, isValidLang } from "@/lib/seo/head";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
@@ -144,8 +146,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const seg = pathname.split("/")[1];
+  const lang = isValidLang(seg) ? seg : "en";
+  const dir = htmlDir(lang);
   return (
-    <html lang="en" dir="ltr" className="dark">
+    <html lang={lang} dir={dir} className="dark">
       <head>
         <HeadContent />
       </head>
