@@ -54,7 +54,7 @@ export function SerpPreviewTool() {
 
       <div className="space-y-6">
         <div className="crystal-card p-6 flex items-center gap-6">
-          <ScoreRing value={result.score} />
+          <ScoreRing score={result.score} size={120} />
           <div>
             <div className="text-xs font-mono uppercase tracking-widest text-mist">{t.ui.score}</div>
             <div className="font-display text-4xl gradient-text">{result.score}/100</div>

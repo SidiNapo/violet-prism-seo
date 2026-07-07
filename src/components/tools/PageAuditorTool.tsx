@@ -13,7 +13,7 @@ export function PageAuditorTool() {
     setRan(true);
   };
 
-  const critical = issues.filter((i) => i.severity === "critical");
+  const critical: AuditIssue[] = issues.filter((i) => i.severity === "critical");
   const warning = issues.filter((i) => i.severity === "warning");
   const passed = issues.filter((i) => i.severity === "passed");
 
@@ -46,9 +46,9 @@ export function PageAuditorTool() {
         )}
         {ran &&
           [
-            { list: critical, color: "danger", label: t.ui.audit.critical },
-            { list: warning, color: "warn", label: t.ui.audit.warning },
-            { list: passed, color: "ok", label: t.ui.audit.passed },
+            { list: critical, color: "danger" as const, label: t.ui.audit.critical },
+            { list: warning, color: "warn" as const, label: t.ui.audit.warning },
+            { list: passed, color: "ok" as const, label: t.ui.audit.passed },
           ].map((g) =>
             g.list.length ? (
               <div key={g.label} className="crystal-card p-5">
