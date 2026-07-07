@@ -55,8 +55,12 @@ export const Route = createFileRoute("/$lang/tools/$slug")({
         { property: "og:description", content: tagline },
         { property: "og:url", content: `/${params.lang}/tools/${params.slug}` },
         { property: "og:type", content: "website" },
+        { property: "og:locale", content: ogLocale(lang) },
       ],
-      links: [{ rel: "canonical", href: `/${params.lang}/tools/${params.slug}` }],
+      links: [
+        { rel: "canonical", href: `/${params.lang}/tools/${params.slug}` },
+        ...hreflangLinks(`/tools/${params.slug}`),
+      ],
       scripts: [
         {
           type: "application/ld+json",
