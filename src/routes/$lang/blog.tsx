@@ -52,7 +52,7 @@ export const Route = createFileRoute("/$lang/blog")({
 
 function BlogList() {
   const { t, lang } = useI18n();
-  const { posts } = Route.useLoaderData();
+  const { posts } = Route.useLoaderData() as { posts: PostRow[] };
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-16">
