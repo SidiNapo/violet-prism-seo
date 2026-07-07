@@ -1,26 +1,36 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
+import { lazy, Suspense, type ComponentType } from "react";
 import { useI18n } from "@/i18n/context";
 import { TOOLS, type ToolSlug } from "@/lib/tools-catalog";
-import { SerpPreviewTool } from "@/components/tools/SerpPreviewTool";
-import { KeywordDensityTool } from "@/components/tools/KeywordDensityTool";
-import { PageAuditorTool } from "@/components/tools/PageAuditorTool";
-import { ReadabilityTool } from "@/components/tools/ReadabilityTool";
-import { MetaGeneratorTool } from "@/components/tools/MetaGeneratorTool";
-import { RobotsSitemapTool } from "@/components/tools/RobotsSitemapTool";
-import { AnchorAuditTool } from "@/components/tools/AnchorAuditTool";
-import { KeywordIdeasTool } from "@/components/tools/KeywordIdeasTool";
 import { dictionaries, type Lang } from "@/i18n/dictionaries";
+import { hreflangLinks, ogLocale } from "@/lib/seo/head";
 import { ArrowRight } from "lucide-react";
 
-const COMPONENTS: Record<ToolSlug, React.FC> = {
-  "serp-preview": SerpPreviewTool,
-  "keyword-density": KeywordDensityTool,
-  "page-auditor": PageAuditorTool,
-  readability: ReadabilityTool,
-  "meta-generator": MetaGeneratorTool,
-  "robots-sitemap": RobotsSitemapTool,
-  "anchor-audit": AnchorAuditTool,
-  "keyword-ideas": KeywordIdeasTool,
+const COMPONENTS: Record<ToolSlug, ComponentType> = {
+  "serp-preview": lazy(() =>
+    import("@/components/tools/SerpPreviewTool").then((m) => ({ default: m.SerpPreviewTool })),
+  ),
+  "keyword-density": lazy(() =>
+    import("@/components/tools/KeywordDensityTool").then((m) => ({ default: m.KeywordDensityTool })),
+  ),
+  "page-auditor": lazy(() =>
+    import("@/components/tools/PageAuditorTool").then((m) => ({ default: m.PageAuditorTool })),
+  ),
+  readability: lazy(() =>
+    import("@/components/tools/ReadabilityTool").then((m) => ({ default: m.ReadabilityTool })),
+  ),
+  "meta-generator": lazy(() =>
+    import("@/components/tools/MetaGeneratorTool").then((m) => ({ default: m.MetaGeneratorTool })),
+  ),
+  "robots-sitemap": lazy(() =>
+    import("@/components/tools/RobotsSitemapTool").then((m) => ({ default: m.RobotsSitemapTool })),
+  ),
+  "anchor-audit": lazy(() =>
+    import("@/components/tools/AnchorAuditTool").then((m) => ({ default: m.AnchorAuditTool })),
+  ),
+  "keyword-ideas": lazy(() =>
+    import("@/components/tools/KeywordIdeasTool").then((m) => ({ default: m.KeywordIdeasTool })),
+  ),
 };
 
 const SLUGS = TOOLS.map((t) => t.slug) as string[];
