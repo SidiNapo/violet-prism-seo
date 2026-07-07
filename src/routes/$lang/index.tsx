@@ -3,6 +3,7 @@ import { useI18n } from "@/i18n/context";
 import { MiniSerpAnalyzer } from "@/components/site/MiniSerpAnalyzer";
 import { MagneticButton } from "@/components/site/MagneticButton";
 import { TOOLS } from "@/lib/tools-catalog";
+import { hreflangLinks } from "@/lib/seo/head";
 import { ArrowRight, ShieldCheck, Zap, Infinity as InfinityIcon } from "lucide-react";
 
 export const Route = createFileRoute("/$lang/")({
@@ -28,9 +29,12 @@ export const Route = createFileRoute("/$lang/")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:url", content: `/${lang}` },
-        { property: "og:locale", content: lang === "fr" ? "fr_FR" : lang === "ar" ? "ar" : "en_US" },
+        { property: "og:locale", content: lang === "fr" ? "fr_FR" : lang === "ar" ? "ar_AR" : "en_US" },
       ],
-      links: [{ rel: "canonical", href: `/${lang}` }],
+      links: [
+        { rel: "canonical", href: `/${lang}` },
+        ...hreflangLinks(""),
+      ],
       scripts: [
         {
           type: "application/ld+json",

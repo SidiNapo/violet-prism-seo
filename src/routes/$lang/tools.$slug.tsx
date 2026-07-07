@@ -1,26 +1,36 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
+import { lazy, Suspense, type ComponentType } from "react";
 import { useI18n } from "@/i18n/context";
 import { TOOLS, type ToolSlug } from "@/lib/tools-catalog";
-import { SerpPreviewTool } from "@/components/tools/SerpPreviewTool";
-import { KeywordDensityTool } from "@/components/tools/KeywordDensityTool";
-import { PageAuditorTool } from "@/components/tools/PageAuditorTool";
-import { ReadabilityTool } from "@/components/tools/ReadabilityTool";
-import { MetaGeneratorTool } from "@/components/tools/MetaGeneratorTool";
-import { RobotsSitemapTool } from "@/components/tools/RobotsSitemapTool";
-import { AnchorAuditTool } from "@/components/tools/AnchorAuditTool";
-import { KeywordIdeasTool } from "@/components/tools/KeywordIdeasTool";
 import { dictionaries, type Lang } from "@/i18n/dictionaries";
+import { hreflangLinks, ogLocale } from "@/lib/seo/head";
 import { ArrowRight } from "lucide-react";
 
-const COMPONENTS: Record<ToolSlug, React.FC> = {
-  "serp-preview": SerpPreviewTool,
-  "keyword-density": KeywordDensityTool,
-  "page-auditor": PageAuditorTool,
-  readability: ReadabilityTool,
-  "meta-generator": MetaGeneratorTool,
-  "robots-sitemap": RobotsSitemapTool,
-  "anchor-audit": AnchorAuditTool,
-  "keyword-ideas": KeywordIdeasTool,
+const COMPONENTS: Record<ToolSlug, ComponentType> = {
+  "serp-preview": lazy(() =>
+    import("@/components/tools/SerpPreviewTool").then((m) => ({ default: m.SerpPreviewTool })),
+  ),
+  "keyword-density": lazy(() =>
+    import("@/components/tools/KeywordDensityTool").then((m) => ({ default: m.KeywordDensityTool })),
+  ),
+  "page-auditor": lazy(() =>
+    import("@/components/tools/PageAuditorTool").then((m) => ({ default: m.PageAuditorTool })),
+  ),
+  readability: lazy(() =>
+    import("@/components/tools/ReadabilityTool").then((m) => ({ default: m.ReadabilityTool })),
+  ),
+  "meta-generator": lazy(() =>
+    import("@/components/tools/MetaGeneratorTool").then((m) => ({ default: m.MetaGeneratorTool })),
+  ),
+  "robots-sitemap": lazy(() =>
+    import("@/components/tools/RobotsSitemapTool").then((m) => ({ default: m.RobotsSitemapTool })),
+  ),
+  "anchor-audit": lazy(() =>
+    import("@/components/tools/AnchorAuditTool").then((m) => ({ default: m.AnchorAuditTool })),
+  ),
+  "keyword-ideas": lazy(() =>
+    import("@/components/tools/KeywordIdeasTool").then((m) => ({ default: m.KeywordIdeasTool })),
+  ),
 };
 
 const SLUGS = TOOLS.map((t) => t.slug) as string[];
@@ -45,8 +55,12 @@ export const Route = createFileRoute("/$lang/tools/$slug")({
         { property: "og:description", content: tagline },
         { property: "og:url", content: `/${params.lang}/tools/${params.slug}` },
         { property: "og:type", content: "website" },
+        { property: "og:locale", content: ogLocale(lang) },
       ],
-      links: [{ rel: "canonical", href: `/${params.lang}/tools/${params.slug}` }],
+      links: [
+        { rel: "canonical", href: `/${params.lang}/tools/${params.slug}` },
+        ...hreflangLinks(`/tools/${params.slug}`),
+      ],
       scripts: [
         {
           type: "application/ld+json",
@@ -93,7 +107,9 @@ function ToolPage() {
         </div>
       </div>
 
-      <Tool />
+      <Suspense fallback={<div className="crystal-card h-96 animate-pulse" />}>
+        <Tool />
+      </Suspense>
 
       <section className="mt-16">
         <div className="text-xs uppercase tracking-widest text-amethyst-glow font-mono mb-4">{t.ui.related}</div>

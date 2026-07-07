@@ -1,13 +1,23 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/i18n/context";
 import { TOOLS } from "@/lib/tools-catalog";
+import { hreflangLinks, ogLocale, pickLang } from "@/lib/seo/head";
+import type { Lang } from "@/i18n/dictionaries";
 
 export const Route = createFileRoute("/$lang/tools/")({
   component: ToolsHub,
   head: ({ params }) => {
-    const title = "SEO Tools — E-SeoMax";
-    const description =
-      "Eight algorithmic SEO tools running fully in your browser: SERP preview, keyword density, page auditor, readability, meta generator, robots & sitemap, anchor audit, and keyword ideas.";
+    const lang = params.lang as Lang;
+    const title = pickLang(lang, {
+      en: "SEO Tools — E-SeoMax",
+      fr: "Outils SEO — E-SeoMax",
+      ar: "أدوات SEO — E-SeoMax",
+    });
+    const description = pickLang(lang, {
+      en: "Eight algorithmic SEO tools running fully in your browser: SERP preview, keyword density, page auditor, readability, meta generator, robots & sitemap, anchor audit, and keyword ideas.",
+      fr: "Huit outils SEO algorithmiques dans votre navigateur : aperçu SERP, densité de mots-clés, audit de page, lisibilité, générateur de meta, robots & sitemap, audit d'ancres et idées de mots-clés.",
+      ar: "ثمانية أدوات SEO خوارزمية تعمل بالكامل في متصفحك: معاينة SERP، كثافة الكلمات، تدقيق الصفحة، قابلية القراءة، مولّد الوسوم، robots وsitemap، تدقيق الروابط، وأفكار الكلمات.",
+    });
     return {
       meta: [
         { title },
@@ -16,12 +26,30 @@ export const Route = createFileRoute("/$lang/tools/")({
         { property: "og:description", content: description },
         { property: "og:url", content: `/${params.lang}/tools` },
         { property: "og:type", content: "website" },
+        { property: "og:locale", content: ogLocale(lang) },
       ],
-      links: [{ rel: "canonical", href: `/${params.lang}/tools` }],
+      links: [
+        { rel: "canonical", href: `/${params.lang}/tools` },
+        ...hreflangLinks("/tools"),
+      ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            itemListElement: TOOLS.map((t, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              url: `https://e-seomax.com/${params.lang}/tools/${t.slug}`,
+              name: t.slug,
+            })),
+          }),
+        },
+      ],
     };
   },
 });
-
 
 function ToolsHub() {
   const { t, lang } = useI18n();

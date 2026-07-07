@@ -8,15 +8,16 @@ const I18nContext = createContext<Ctx | null>(null);
 export function I18nProvider({ lang, children }: { lang: Lang; children: ReactNode }) {
   const dir = lang === "ar" ? "rtl" : "ltr";
 
+  // <html lang> and dir are set server-side by RootShell from the URL segment,
+  // so we don't touch documentElement here (would cause a hydration mismatch).
+  // Only persist the user's language choice for lang-switch UX.
   useEffect(() => {
-    document.documentElement.lang = lang;
-    document.documentElement.dir = dir;
     try {
       localStorage.setItem("eseomax:lang", lang);
     } catch {
       /* ignore */
     }
-  }, [lang, dir]);
+  }, [lang]);
 
   return (
     <I18nContext.Provider value={{ lang, t: dictionaries[lang], dir }}>
