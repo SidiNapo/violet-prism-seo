@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "description": "Deterministic sample URLs and keywords used by the 8-tool e2e suite. Bump `version` when the shape or intent of a sample changes so snapshots invalidate intentionally.",
+  "lang": "en",
+  "baseUrl": "https://e-seomax.com",
+  "tools": {
+    "serp-preview": {
+      "route": "/en/tools/serp-preview",
+      "inputs": {
+        "title": "12 SEO Techniques That Actually Rank Pages in 2026",
+        "description": "A free, algorithmic guide. No fluff — only techniques that actually move the needle for organic rankings.",
+        "keyword": "seo 2026"
+      },
+      "expect": ["/100"],
+      "snapshot": "serp-preview.html"
+    },
+    "keyword-density": {
+      "route": "/en/tools/keyword-density",
+      "inputs": {
+        "text": "SEO is a discipline. SEO rewards patience. Technical SEO, content SEO, and link SEO must align. Good SEO compounds when structured data, internal links, and topical clusters reinforce each other consistently."
+      },
+      "expect": ["seo"],
+      "snapshot": "keyword-density.html"
+    },
+    "page-auditor": {
+      "route": "/en/tools/page-auditor",
+      "inputs": {
+        "html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Sample SEO Page — 2026 Playbook</title><meta name=\"description\" content=\"A deterministic sample page used by the e2e auditor.\"><link rel=\"canonical\" href=\"https://e-seomax.com/sample\"><meta property=\"og:title\" content=\"Sample\"><meta property=\"og:description\" content=\"Sample OG\"><meta property=\"og:image\" content=\"https://e-seomax.com/og.jpg\"></head><body><h1>Sample SEO Page</h1><h2>Section</h2><p>Body copy with <a href=\"/inner\">internal link</a> and <img src=\"/a.jpg\" alt=\"alt text\">.</p></body></html>"
+      },
+      "click": "Run audit",
+      "expect": ["Critical", "Passed"],
+      "snapshot": "page-auditor.html"
+    },
+    "readability": {
+      "route": "/en/tools/readability",
+      "inputs": {
+        "text": "Search engines reward clarity. Write short sentences. Prefer active voice. Explain one idea per paragraph. When a sentence stretches beyond twenty words, it usually hides two ideas that deserve to stand on their own."
+      },
+      "expect": ["Flesch", "Grade"],
+      "snapshot": "readability.html"
+    },
+    "meta-generator": {
+      "route": "/en/tools/meta-generator",
+      "inputs": {
+        "title": "Sample SEO Page — 2026 Playbook",
+        "description": "A deterministic sample page used by the e2e meta generator.",
+        "url": "https://e-seomax.com/sample",
+        "image": "https://e-seomax.com/og.jpg",
+        "site": "E-SeoMax",
+        "author": "E-SeoMax Team"
+      },
+      "expect": ["<title>", "application/ld+json"],
+      "snapshot": "meta-generator.html"
+    },
+    "robots-sitemap": {
+      "route": "/en/tools/robots-sitemap",
+      "inputs": {},
+      "expect": ["User-agent"],
+      "snapshot": "robots-sitemap.html"
+    },
+    "anchor-audit": {
+      "route": "/en/tools/anchor-audit",
+      "inputs": {
+        "brand": "E-SeoMax",
+        "keyword": "seo tools",
+        "text": "E-SeoMax\nseo tools\nfree seo tools\nclick here\nhttps://e-seomax.com\nlearn more\nbest seo tools 2026\nE-SeoMax platform\nseo audit\nread the guide"
+      },
+      "expect": ["seo tools"],
+      "snapshot": "anchor-audit.html"
+    },
+    "keyword-ideas": {
+      "route": "/en/tools/keyword-ideas",
+      "inputs": {
+        "seed": "seo audit"
+      },
+      "click": "Generate ideas",
+      "expect": ["seo audit"],
+      "snapshot": "keyword-ideas.html"
+    }
+  }
+}
