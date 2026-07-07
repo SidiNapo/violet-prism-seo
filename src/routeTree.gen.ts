@@ -9,15 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as LangRouteRouteImport } from './routes/$lang/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as LangToolsRouteImport } from './routes/$lang/tools'
 import { Route as LangContactRouteImport } from './routes/$lang/contact'
 import { Route as LangBlogRouteImport } from './routes/$lang/blog'
+import { Route as LangAdminRouteImport } from './routes/$lang/admin'
 import { Route as LangAboutRouteImport } from './routes/$lang/about'
 import { Route as LangToolsSlugRouteImport } from './routes/$lang/tools.$slug'
+import { Route as LangBlogSlugRouteImport } from './routes/$lang/blog.$slug'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LangRouteRoute = LangRouteRouteImport.update({
   id: '/$lang',
   path: '/$lang',
@@ -48,6 +62,11 @@ const LangBlogRoute = LangBlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => LangRouteRoute,
 } as any)
+const LangAdminRoute = LangAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => LangRouteRoute,
+} as any)
 const LangAboutRoute = LangAboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -58,35 +77,52 @@ const LangToolsSlugRoute = LangToolsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => LangToolsRoute,
 } as any)
+const LangBlogSlugRoute = LangBlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => LangBlogRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/about': typeof LangAboutRoute
-  '/$lang/blog': typeof LangBlogRoute
+  '/$lang/admin': typeof LangAdminRoute
+  '/$lang/blog': typeof LangBlogRouteWithChildren
   '/$lang/contact': typeof LangContactRoute
   '/$lang/tools': typeof LangToolsRouteWithChildren
   '/$lang/': typeof LangIndexRoute
+  '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/about': typeof LangAboutRoute
-  '/$lang/blog': typeof LangBlogRoute
+  '/$lang/admin': typeof LangAdminRoute
+  '/$lang/blog': typeof LangBlogRouteWithChildren
   '/$lang/contact': typeof LangContactRoute
   '/$lang/tools': typeof LangToolsRouteWithChildren
   '/$lang': typeof LangIndexRoute
+  '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$lang': typeof LangRouteRouteWithChildren
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/about': typeof LangAboutRoute
-  '/$lang/blog': typeof LangBlogRoute
+  '/$lang/admin': typeof LangAdminRoute
+  '/$lang/blog': typeof LangBlogRouteWithChildren
   '/$lang/contact': typeof LangContactRoute
   '/$lang/tools': typeof LangToolsRouteWithChildren
   '/$lang/': typeof LangIndexRoute
+  '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
 }
 export interface FileRouteTypes {
@@ -94,40 +130,68 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$lang'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/$lang/about'
+    | '/$lang/admin'
     | '/$lang/blog'
     | '/$lang/contact'
     | '/$lang/tools'
     | '/$lang/'
+    | '/$lang/blog/$slug'
     | '/$lang/tools/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/$lang/about'
+    | '/$lang/admin'
     | '/$lang/blog'
     | '/$lang/contact'
     | '/$lang/tools'
     | '/$lang'
+    | '/$lang/blog/$slug'
     | '/$lang/tools/$slug'
   id:
     | '__root__'
     | '/'
     | '/$lang'
+    | '/robots.txt'
+    | '/sitemap.xml'
     | '/$lang/about'
+    | '/$lang/admin'
     | '/$lang/blog'
     | '/$lang/contact'
     | '/$lang/tools'
     | '/$lang/'
+    | '/$lang/blog/$slug'
     | '/$lang/tools/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LangRouteRoute: typeof LangRouteRouteWithChildren
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$lang': {
       id: '/$lang'
       path: '/$lang'
@@ -170,6 +234,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangBlogRouteImport
       parentRoute: typeof LangRouteRoute
     }
+    '/$lang/admin': {
+      id: '/$lang/admin'
+      path: '/admin'
+      fullPath: '/$lang/admin'
+      preLoaderRoute: typeof LangAdminRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
     '/$lang/about': {
       id: '/$lang/about'
       path: '/about'
@@ -184,8 +255,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangToolsSlugRouteImport
       parentRoute: typeof LangToolsRoute
     }
+    '/$lang/blog/$slug': {
+      id: '/$lang/blog/$slug'
+      path: '/$slug'
+      fullPath: '/$lang/blog/$slug'
+      preLoaderRoute: typeof LangBlogSlugRouteImport
+      parentRoute: typeof LangBlogRoute
+    }
   }
 }
+
+interface LangBlogRouteChildren {
+  LangBlogSlugRoute: typeof LangBlogSlugRoute
+}
+
+const LangBlogRouteChildren: LangBlogRouteChildren = {
+  LangBlogSlugRoute: LangBlogSlugRoute,
+}
+
+const LangBlogRouteWithChildren = LangBlogRoute._addFileChildren(
+  LangBlogRouteChildren,
+)
 
 interface LangToolsRouteChildren {
   LangToolsSlugRoute: typeof LangToolsSlugRoute
@@ -201,7 +291,8 @@ const LangToolsRouteWithChildren = LangToolsRoute._addFileChildren(
 
 interface LangRouteRouteChildren {
   LangAboutRoute: typeof LangAboutRoute
-  LangBlogRoute: typeof LangBlogRoute
+  LangAdminRoute: typeof LangAdminRoute
+  LangBlogRoute: typeof LangBlogRouteWithChildren
   LangContactRoute: typeof LangContactRoute
   LangToolsRoute: typeof LangToolsRouteWithChildren
   LangIndexRoute: typeof LangIndexRoute
@@ -209,7 +300,8 @@ interface LangRouteRouteChildren {
 
 const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangAboutRoute: LangAboutRoute,
-  LangBlogRoute: LangBlogRoute,
+  LangAdminRoute: LangAdminRoute,
+  LangBlogRoute: LangBlogRouteWithChildren,
   LangContactRoute: LangContactRoute,
   LangToolsRoute: LangToolsRouteWithChildren,
   LangIndexRoute: LangIndexRoute,
@@ -222,6 +314,8 @@ const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LangRouteRoute: LangRouteRouteWithChildren,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
