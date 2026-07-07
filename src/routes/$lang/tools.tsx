@@ -4,14 +4,24 @@ import { TOOLS } from "@/lib/tools-catalog";
 
 export const Route = createFileRoute("/$lang/tools")({
   component: ToolsHub,
-  head: ({ params }) => ({
-    meta: [
-      { title: `Tools — E-SeoMax` },
-      { property: "og:url", content: `/${params.lang}/tools` },
-    ],
-    links: [{ rel: "canonical", href: `/${params.lang}/tools` }],
-  }),
+  head: ({ params }) => {
+    const title = "SEO Tools — E-SeoMax";
+    const description =
+      "Eight algorithmic SEO tools running fully in your browser: SERP preview, keyword density, page auditor, readability, meta generator, robots & sitemap, anchor audit, and keyword ideas.";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: `/${params.lang}/tools` },
+        { property: "og:type", content: "website" },
+      ],
+      links: [{ rel: "canonical", href: `/${params.lang}/tools` }],
+    };
+  },
 });
+
 
 function ToolsHub() {
   const { t, lang } = useI18n();

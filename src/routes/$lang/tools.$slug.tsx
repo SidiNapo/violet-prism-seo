@@ -9,6 +9,7 @@ import { MetaGeneratorTool } from "@/components/tools/MetaGeneratorTool";
 import { RobotsSitemapTool } from "@/components/tools/RobotsSitemapTool";
 import { AnchorAuditTool } from "@/components/tools/AnchorAuditTool";
 import { KeywordIdeasTool } from "@/components/tools/KeywordIdeasTool";
+import { dictionaries, type Lang } from "@/i18n/dictionaries";
 import { ArrowRight } from "lucide-react";
 
 const COMPONENTS: Record<ToolSlug, React.FC> = {
@@ -29,13 +30,40 @@ export const Route = createFileRoute("/$lang/tools/$slug")({
     if (!SLUGS.includes(params.slug)) throw notFound();
   },
   component: ToolPage,
-  head: ({ params }) => ({
-    meta: [
-      { title: `${params.slug} — E-SeoMax` },
-      { property: "og:url", content: `/${params.lang}/tools/${params.slug}` },
-    ],
-    links: [{ rel: "canonical", href: `/${params.lang}/tools/${params.slug}` }],
-  }),
+  head: ({ params }) => {
+    const lang = (["en", "fr", "ar"].includes(params.lang) ? params.lang : "en") as Lang;
+    const meta = dictionaries[lang].tools[params.slug as ToolSlug];
+
+    const name = meta?.name ?? params.slug;
+    const tagline = meta?.tagline ?? "";
+    const title = `${name} — E-SeoMax`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: tagline },
+        { property: "og:title", content: title },
+        { property: "og:description", content: tagline },
+        { property: "og:url", content: `/${params.lang}/tools/${params.slug}` },
+        { property: "og:type", content: "website" },
+      ],
+      links: [{ rel: "canonical", href: `/${params.lang}/tools/${params.slug}` }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name,
+            description: tagline,
+            applicationCategory: "SEOApplication",
+            operatingSystem: "Any (web browser)",
+            url: `https://e-seomax.com/${params.lang}/tools/${params.slug}`,
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+          }),
+        },
+      ],
+    };
+  },
   notFoundComponent: () => (
     <div className="mx-auto max-w-3xl px-4 py-24 text-center">
       <div className="font-display text-5xl gradient-text">404</div>
@@ -43,6 +71,7 @@ export const Route = createFileRoute("/$lang/tools/$slug")({
     </div>
   ),
 });
+
 
 function ToolPage() {
   const { slug } = Route.useParams();

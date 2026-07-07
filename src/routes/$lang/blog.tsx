@@ -10,17 +10,24 @@ type PostRow = {
 
 export const Route = createFileRoute("/$lang/blog")({
   component: BlogList,
-  head: ({ params }) => ({
-    meta: [
-      { title: "Journal — E-SeoMax" },
-      { name: "description", content: "Long-form thinking on algorithmic SEO." },
-      { property: "og:title", content: "Journal — E-SeoMax" },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: `/${params.lang}/blog` },
-    ],
-    links: [{ rel: "canonical", href: `/${params.lang}/blog` }],
-  }),
+  head: ({ params }) => {
+    const title = "Journal — E-SeoMax";
+    const description =
+      "Long-form thinking on algorithmic SEO, on-page craft, and how search actually works — from the E-SeoMax team.";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: `/${params.lang}/blog` },
+      ],
+      links: [{ rel: "canonical", href: `/${params.lang}/blog` }],
+    };
+  },
 });
+
 
 function BlogList() {
   const { t, lang } = useI18n();

@@ -1,0 +1,31 @@
+# E-SeoMax
+
+> E-SeoMax is a premium, trilingual (English / Français / العربية) SEO intelligence platform. Eight algorithmic SEO tools run fully in the browser — no external APIs, no quotas, and no data leaves the user's machine.
+
+E-SeoMax pairs an in-browser SEO toolkit (SERP preview, keyword density, page auditor, readability, meta generator, robots & sitemap, anchor audit, keyword ideas) with a long-form editorial journal on algorithmic SEO.
+
+## Pages
+
+- [Home (English)](/en): Overview of the platform and live SERP score widget.
+- [Home (Français)](/fr): Vue d'ensemble de la plateforme.
+- [Home (العربية)](/ar): نظرة عامة على المنصة.
+- [Tools](/en/tools): Directory of the eight algorithmic SEO tools.
+- [Journal](/en/blog): Long-form articles on algorithmic SEO.
+- [About](/en/about): What E-SeoMax is and how it works.
+- [Contact](/en/contact): How to reach the team.
+
+## Tools
+
+- [SERP Preview](/en/tools/serp-preview): Pixel-accurate Google SERP simulator with live scoring.
+- [Keyword Density](/en/tools/keyword-density): Unigram, bigram, and trigram frequency analysis.
+- [Page Auditor](/en/tools/page-auditor): On-page SEO audit from pasted HTML.
+- [Readability](/en/tools/readability): Flesch reading ease and grade-level scoring.
+- [Meta Generator](/en/tools/meta-generator): Title, description, Open Graph, and JSON-LD builder.
+- [Robots & Sitemap](/en/tools/robots-sitemap): robots.txt and sitemap.xml generator and linter.
+- [Anchor Audit](/en/tools/anchor-audit): Anchor text distribution and over-optimization risk.
+- [Keyword Ideas](/en/tools/keyword-ideas): Modifier-based keyword expansion with intent tagging.
+
+## Optional
+
+- [Journal (Français)](/fr/blog): Articles en français.
+- [Journal (العربية)](/ar/blog): مقالات بالعربية.

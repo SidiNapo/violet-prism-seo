@@ -12,15 +12,60 @@ type Post = {
 
 export const Route = createFileRoute("/$lang/blog/$slug")({
   component: BlogDetail,
-  head: ({ params }) => ({
-    meta: [
-      { title: `${params.slug} — E-SeoMax` },
-      { property: "og:type", content: "article" },
-      { property: "og:url", content: `/${params.lang}/blog/${params.slug}` },
-    ],
-    links: [{ rel: "canonical", href: `/${params.lang}/blog/${params.slug}` }],
-  }),
+  loader: async ({ params }) => {
+    const { data } = await supabase
+      .from("posts")
+      .select("title,excerpt,cover_image_url,meta_title,meta_description,author_name,published_at,updated_at")
+      .eq("slug", params.slug)
+      .eq("lang", params.lang)
+      .eq("status", "published")
+      .maybeSingle();
+    return { seo: data as {
+      title: string; excerpt: string; cover_image_url: string | null;
+      meta_title: string | null; meta_description: string | null;
+      author_name: string; published_at: string | null; updated_at: string;
+    } | null };
+  },
+  head: ({ params, loaderData }) => {
+    const seo = loaderData?.seo;
+    const title = seo?.meta_title || (seo?.title ? `${seo.title} — E-SeoMax` : `${params.slug} — E-SeoMax`);
+    const description = (seo?.meta_description || seo?.excerpt || "Long-form thinking on algorithmic SEO from the E-SeoMax team.").slice(0, 160);
+    const url = `https://e-seomax.com/${params.lang}/blog/${params.slug}`;
+    const image = seo?.cover_image_url || undefined;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "article" },
+        { property: "og:url", content: `/${params.lang}/blog/${params.slug}` },
+        ...(image ? [{ property: "og:image", content: image }, { name: "twitter:image", content: image }] : []),
+      ],
+      links: [{ rel: "canonical", href: `/${params.lang}/blog/${params.slug}` }],
+      scripts: seo
+        ? [
+            {
+              type: "application/ld+json",
+              children: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Article",
+                headline: seo.title,
+                description,
+                author: { "@type": "Person", name: seo.author_name },
+                datePublished: seo.published_at,
+                dateModified: seo.updated_at,
+                image: image ? [image] : undefined,
+                mainEntityOfPage: url,
+                inLanguage: params.lang,
+              }),
+            },
+          ]
+        : [],
+    };
+  },
 });
+
 
 function BlogDetail() {
   const { slug, lang } = Route.useParams();

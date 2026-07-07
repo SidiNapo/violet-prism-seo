@@ -15,11 +15,20 @@ export const Route = createFileRoute("/$lang/")({
         : lang === "ar"
           ? "E-SeoMax — ذكاء SEO خوارزمي"
           : "E-SeoMax — Algorithmic SEO Intelligence";
+    const description =
+      lang === "fr"
+        ? "Huit outils SEO algorithmiques dans votre navigateur. Aperçu SERP, densité de mots-clés, audit de page, lisibilité et plus — sans API, sans limites."
+        : lang === "ar"
+          ? "ثمانية أدوات SEO خوارزمية تعمل في متصفحك. معاينة SERP وكثافة الكلمات المفتاحية وتدقيق الصفحة والمزيد — بدون واجهات برمجية ولا حدود."
+          : "Eight algorithmic SEO tools that run in your browser. SERP preview, keyword density, page auditor, readability and more — no APIs, no limits.";
     return {
       meta: [
         { title },
+        { name: "description", content: description },
         { property: "og:title", content: title },
+        { property: "og:description", content: description },
         { property: "og:url", content: `/${lang}` },
+        { property: "og:locale", content: lang === "fr" ? "fr_FR" : lang === "ar" ? "ar" : "en_US" },
       ],
       links: [{ rel: "canonical", href: `/${lang}` }],
       scripts: [
@@ -27,16 +36,18 @@ export const Route = createFileRoute("/$lang/")({
           type: "application/ld+json",
           children: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "Organization",
+            "@type": "WebSite",
             name: "E-SeoMax",
-            url: "/",
-            description: "Premium trilingual SEO intelligence platform.",
+            url: `https://e-seomax.com/${lang}`,
+            inLanguage: lang,
+            description,
           }),
         },
       ],
     };
   },
 });
+
 
 function Home() {
   const { t, lang } = useI18n();
