@@ -10,7 +10,7 @@ type Post = {
   keywords: string[]; status: string; views: number; published_at: string | null; reading_minutes: number;
 };
 
-export const Route = createFileRoute("/$lang/admin")({
+export const Route = createFileRoute("/$lang/console/7k9m2p")({
   component: Admin,
   head: () => ({ meta: [{ title: "Admin — E-SeoMax" }, { name: "robots", content: "noindex" }] }),
 });
