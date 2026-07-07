@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/i18n/context";
 import { TOOLS } from "@/lib/tools-catalog";
 
-export const Route = createFileRoute("/$lang/tools")({
+export const Route = createFileRoute("/$lang/tools/")({
   component: ToolsHub,
   head: ({ params }) => {
     const title = "SEO Tools — E-SeoMax";
