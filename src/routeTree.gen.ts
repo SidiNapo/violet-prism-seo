@@ -17,9 +17,9 @@ import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as LangToolsRouteImport } from './routes/$lang/tools'
 import { Route as LangContactRouteImport } from './routes/$lang/contact'
 import { Route as LangBlogRouteImport } from './routes/$lang/blog'
-import { Route as LangAdminRouteImport } from './routes/$lang/admin'
 import { Route as LangAboutRouteImport } from './routes/$lang/about'
 import { Route as LangToolsSlugRouteImport } from './routes/$lang/tools.$slug'
+import { Route as LangConsole7k9m2pRouteImport } from './routes/$lang/console.7k9m2p'
 import { Route as LangBlogSlugRouteImport } from './routes/$lang/blog.$slug'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -62,11 +62,6 @@ const LangBlogRoute = LangBlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => LangRouteRoute,
 } as any)
-const LangAdminRoute = LangAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => LangRouteRoute,
-} as any)
 const LangAboutRoute = LangAboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -76,6 +71,11 @@ const LangToolsSlugRoute = LangToolsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => LangToolsRoute,
+} as any)
+const LangConsole7k9m2pRoute = LangConsole7k9m2pRouteImport.update({
+  id: '/console/7k9m2p',
+  path: '/console/7k9m2p',
+  getParentRoute: () => LangRouteRoute,
 } as any)
 const LangBlogSlugRoute = LangBlogSlugRouteImport.update({
   id: '/$slug',
@@ -89,12 +89,12 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/about': typeof LangAboutRoute
-  '/$lang/admin': typeof LangAdminRoute
   '/$lang/blog': typeof LangBlogRouteWithChildren
   '/$lang/contact': typeof LangContactRoute
   '/$lang/tools': typeof LangToolsRouteWithChildren
   '/$lang/': typeof LangIndexRoute
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
+  '/$lang/console/7k9m2p': typeof LangConsole7k9m2pRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
 }
 export interface FileRoutesByTo {
@@ -102,12 +102,12 @@ export interface FileRoutesByTo {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/about': typeof LangAboutRoute
-  '/$lang/admin': typeof LangAdminRoute
   '/$lang/blog': typeof LangBlogRouteWithChildren
   '/$lang/contact': typeof LangContactRoute
   '/$lang/tools': typeof LangToolsRouteWithChildren
   '/$lang': typeof LangIndexRoute
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
+  '/$lang/console/7k9m2p': typeof LangConsole7k9m2pRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
 }
 export interface FileRoutesById {
@@ -117,12 +117,12 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/about': typeof LangAboutRoute
-  '/$lang/admin': typeof LangAdminRoute
   '/$lang/blog': typeof LangBlogRouteWithChildren
   '/$lang/contact': typeof LangContactRoute
   '/$lang/tools': typeof LangToolsRouteWithChildren
   '/$lang/': typeof LangIndexRoute
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
+  '/$lang/console/7k9m2p': typeof LangConsole7k9m2pRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
 }
 export interface FileRouteTypes {
@@ -133,12 +133,12 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/$lang/about'
-    | '/$lang/admin'
     | '/$lang/blog'
     | '/$lang/contact'
     | '/$lang/tools'
     | '/$lang/'
     | '/$lang/blog/$slug'
+    | '/$lang/console/7k9m2p'
     | '/$lang/tools/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -146,12 +146,12 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/$lang/about'
-    | '/$lang/admin'
     | '/$lang/blog'
     | '/$lang/contact'
     | '/$lang/tools'
     | '/$lang'
     | '/$lang/blog/$slug'
+    | '/$lang/console/7k9m2p'
     | '/$lang/tools/$slug'
   id:
     | '__root__'
@@ -160,12 +160,12 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/$lang/about'
-    | '/$lang/admin'
     | '/$lang/blog'
     | '/$lang/contact'
     | '/$lang/tools'
     | '/$lang/'
     | '/$lang/blog/$slug'
+    | '/$lang/console/7k9m2p'
     | '/$lang/tools/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -234,13 +234,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangBlogRouteImport
       parentRoute: typeof LangRouteRoute
     }
-    '/$lang/admin': {
-      id: '/$lang/admin'
-      path: '/admin'
-      fullPath: '/$lang/admin'
-      preLoaderRoute: typeof LangAdminRouteImport
-      parentRoute: typeof LangRouteRoute
-    }
     '/$lang/about': {
       id: '/$lang/about'
       path: '/about'
@@ -254,6 +247,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/$lang/tools/$slug'
       preLoaderRoute: typeof LangToolsSlugRouteImport
       parentRoute: typeof LangToolsRoute
+    }
+    '/$lang/console/7k9m2p': {
+      id: '/$lang/console/7k9m2p'
+      path: '/console/7k9m2p'
+      fullPath: '/$lang/console/7k9m2p'
+      preLoaderRoute: typeof LangConsole7k9m2pRouteImport
+      parentRoute: typeof LangRouteRoute
     }
     '/$lang/blog/$slug': {
       id: '/$lang/blog/$slug'
@@ -291,20 +291,20 @@ const LangToolsRouteWithChildren = LangToolsRoute._addFileChildren(
 
 interface LangRouteRouteChildren {
   LangAboutRoute: typeof LangAboutRoute
-  LangAdminRoute: typeof LangAdminRoute
   LangBlogRoute: typeof LangBlogRouteWithChildren
   LangContactRoute: typeof LangContactRoute
   LangToolsRoute: typeof LangToolsRouteWithChildren
   LangIndexRoute: typeof LangIndexRoute
+  LangConsole7k9m2pRoute: typeof LangConsole7k9m2pRoute
 }
 
 const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangAboutRoute: LangAboutRoute,
-  LangAdminRoute: LangAdminRoute,
   LangBlogRoute: LangBlogRouteWithChildren,
   LangContactRoute: LangContactRoute,
   LangToolsRoute: LangToolsRouteWithChildren,
   LangIndexRoute: LangIndexRoute,
+  LangConsole7k9m2pRoute: LangConsole7k9m2pRoute,
 }
 
 const LangRouteRouteWithChildren = LangRouteRoute._addFileChildren(
@@ -320,13 +320,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
