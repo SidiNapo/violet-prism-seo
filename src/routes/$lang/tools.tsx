@@ -27,7 +27,7 @@ function ToolsHub() {
           return (
             <Link
               key={slug}
-              to={`/${lang}/tools`}
+              to={`/${lang}/tools/${slug}`}
               className="crystal-card crystal-card-hover p-6 block"
             >
               <div className="flex items-start justify-between">
