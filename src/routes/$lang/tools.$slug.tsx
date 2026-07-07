@@ -9,7 +9,7 @@ import { MetaGeneratorTool } from "@/components/tools/MetaGeneratorTool";
 import { RobotsSitemapTool } from "@/components/tools/RobotsSitemapTool";
 import { AnchorAuditTool } from "@/components/tools/AnchorAuditTool";
 import { KeywordIdeasTool } from "@/components/tools/KeywordIdeasTool";
-import { dict, type Lang } from "@/i18n/dictionaries";
+import { dictionaries, type Lang } from "@/i18n/dictionaries";
 import { ArrowRight } from "lucide-react";
 
 const COMPONENTS: Record<ToolSlug, React.FC> = {
@@ -31,8 +31,9 @@ export const Route = createFileRoute("/$lang/tools/$slug")({
   },
   component: ToolPage,
   head: ({ params }) => {
-    const lang = (params.lang as Lang) in dict ? (params.lang as Lang) : "en";
-    const meta = dict[lang].tools[params.slug as ToolSlug];
+    const lang = (["en", "fr", "ar"].includes(params.lang) ? params.lang : "en") as Lang;
+    const meta = dictionaries[lang].tools[params.slug as ToolSlug];
+
     const name = meta?.name ?? params.slug;
     const tagline = meta?.tagline ?? "";
     const title = `${name} — E-SeoMax`;
