@@ -107,7 +107,9 @@ function ToolPage() {
         </div>
       </div>
 
-      <Tool />
+      <Suspense fallback={<div className="crystal-card h-96 animate-pulse" />}>
+        <Tool />
+      </Suspense>
 
       <section className="mt-16">
         <div className="text-xs uppercase tracking-widest text-amethyst-glow font-mono mb-4">{t.ui.related}</div>
