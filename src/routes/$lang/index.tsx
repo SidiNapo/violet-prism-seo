@@ -189,23 +189,51 @@ function Home() {
         </div>
       </section>
 
-      {/* LATEST POSTS placeholder */}
+      {/* LATEST POSTS */}
       <section className="relative py-20">
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex items-end justify-between mb-8">
             <h2 className="font-display text-3xl md:text-4xl">{t.home.latestPostsTitle}</h2>
             <Link to={`/${lang}/blog`} className="text-sm text-amethyst-glow hover:underline">
-              {t.nav.blog} →
+              {t.home.latestPostsAll} →
             </Link>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="crystal-card p-6 min-h-52 flex items-end">
-                <div className="text-sm text-mist">{t.home.latestPostsEmpty}</div>
-              </div>
-            ))}
-          </div>
+          {latest.length === 0 ? (
+            <div className="grid gap-4 md:grid-cols-3">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="crystal-card p-6 min-h-52 flex items-end">
+                  <div className="text-sm text-mist">{t.home.latestPostsEmpty}</div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-3">
+              {latest.map((p) => (
+                <Link
+                  key={p.id}
+                  to={`/${lang}/blog/${p.slug}`}
+                  className="crystal-card crystal-card-hover p-6 block"
+                >
+                  {p.cover_image_url && (
+                    <img
+                      src={p.cover_image_url}
+                      alt={p.title}
+                      loading="lazy"
+                      width={600}
+                      height={200}
+                      className="w-full h-36 object-cover rounded-lg mb-4"
+                    />
+                  )}
+                  <div className="font-display text-lg line-clamp-2">{p.title}</div>
+                  <p className="mt-2 text-sm text-mist line-clamp-2">{p.excerpt}</p>
+                  <div className="mt-3 text-xs font-mono text-mist">
+                    {p.reading_minutes} {t.blog.readingTime}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>
