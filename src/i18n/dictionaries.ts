@@ -114,9 +114,10 @@ const en: Dict = {
     status: "Status", save: "Save", publish: "Publish", unpublish: "Unpublish", delete: "Delete",
     confirmDelete: "Delete this post permanently?", edit: "Edit", noPosts: "No posts yet — create your first.",
     loginFailed: "Login failed. Check credentials.", forbidden: "You are not an administrator.",
+    back: "Back", saveError: "Save failed — you may not have permission.", deleteError: "Delete failed.", saved: "Saved.",
   },
   footer: { tagline: "Premium SEO intelligence. Powered by algorithms.", product: "Product", company: "Company", resources: "Resources", rights: "All rights reserved." },
-  common: { language: "Language", loading: "Loading…", notFoundTitle: "404 — Off the grid", notFoundBody: "The page you are looking for shattered into cubes.", goHome: "Go home", comingSoon: "Coming soon" },
+  common: { language: "Language", loading: "Loading…", notFoundTitle: "404 — Off the grid", notFoundBody: "The page you are looking for shattered into cubes.", goHome: "Go home", comingSoon: "Coming soon", unknownTool: "Unknown tool.", routeShattered: "Route shattered." },
 };
 
 const fr: Dict = {
