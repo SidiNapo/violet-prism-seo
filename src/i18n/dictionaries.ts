@@ -178,9 +178,10 @@ const fr: Dict = {
     status: "Statut", save: "Enregistrer", publish: "Publier", unpublish: "Dépublier", delete: "Supprimer",
     confirmDelete: "Supprimer cet article ?", edit: "Éditer", noPosts: "Aucun article — créez le premier.",
     loginFailed: "Connexion échouée.", forbidden: "Vous n'êtes pas administrateur.",
+    back: "Retour", saveError: "Enregistrement échoué — permission refusée.", deleteError: "Suppression échouée.", saved: "Enregistré.",
   },
   footer: { tagline: "Intelligence SEO premium. Alimentée par des algorithmes.", product: "Produit", company: "Entreprise", resources: "Ressources", rights: "Tous droits réservés." },
-  common: { language: "Langue", loading: "Chargement…", notFoundTitle: "404 — Hors grille", notFoundBody: "La page recherchée s'est brisée en cubes.", goHome: "Accueil", comingSoon: "Bientôt" },
+  common: { language: "Langue", loading: "Chargement…", notFoundTitle: "404 — Hors grille", notFoundBody: "La page recherchée s'est brisée en cubes.", goHome: "Accueil", comingSoon: "Bientôt", unknownTool: "Outil inconnu.", routeShattered: "Route brisée." },
 };
 
 const ar: Dict = {
