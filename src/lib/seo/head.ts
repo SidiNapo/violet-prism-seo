@@ -18,14 +18,14 @@ export function abs(pathOrUrl: string): string {
  */
 export function hreflangLinks(pathAfterLang: string) {
   const tail = pathAfterLang && !pathAfterLang.startsWith("/") ? `/${pathAfterLang}` : pathAfterLang;
-  const links: { rel: string; hreflang: string; href: string }[] = SEO_LANGS.map((l) => ({
+  const links: { rel: string; hrefLang: string; href: string }[] = SEO_LANGS.map((l) => ({
     rel: "alternate",
-    hreflang: l,
+    hrefLang: l,
     href: `${SITE_ORIGIN}/${l}${tail}`,
   }));
   links.push({
     rel: "alternate",
-    hreflang: "x-default",
+    hrefLang: "x-default",
     href: `${SITE_ORIGIN}/en${tail}`,
   });
   return links;
@@ -40,11 +40,11 @@ export function hreflangFromSiblings(
   pathPrefix: "blog",
   siblings: { lang: string; slug: string }[],
 ) {
-  const links: { rel: string; hreflang: string; href: string }[] = [];
+  const links: { rel: string; hrefLang: string; href: string }[] = [];
   for (const s of siblings) {
     links.push({
       rel: "alternate",
-      hreflang: s.lang,
+      hrefLang: s.lang,
       href: `${SITE_ORIGIN}/${s.lang}/${pathPrefix}/${s.slug}`,
     });
   }
@@ -52,12 +52,13 @@ export function hreflangFromSiblings(
   if (en) {
     links.push({
       rel: "alternate",
-      hreflang: "x-default",
+      hrefLang: "x-default",
       href: `${SITE_ORIGIN}/en/${pathPrefix}/${en.slug}`,
     });
   }
   return links;
 }
+
 
 export function ogLocale(lang: Lang): string {
   return lang === "fr" ? "fr_FR" : lang === "ar" ? "ar_AR" : "en_US";
