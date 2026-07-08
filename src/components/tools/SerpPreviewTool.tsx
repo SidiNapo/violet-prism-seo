@@ -113,16 +113,16 @@ function MeterRow({ label, value, max, unit }: { label: string; value: number; m
     </div>
   );
 }
-function SerpMock({ title, description, device }: { title: string; description: string; device: "desktop" | "mobile" }) {
+function SerpMock({ title, description, device, t }: { title: string; description: string; device: "desktop" | "mobile"; t: ReturnType<typeof useI18n>["t"] }) {
   const w = device === "desktop" ? "max-w-xl" : "max-w-xs";
   return (
     <div className={"bg-white text-black p-4 rounded-md " + w}>
-      <div className="text-xs text-[#5f6368]">example.com › page</div>
+      <div className="text-xs text-[#5f6368]">{t.ui.serp.exampleUrl}</div>
       <div className="text-[#1a0dab] text-lg leading-tight line-clamp-1" style={{ fontFamily: "Arial, sans-serif" }}>
-        {title || "Your page title"}
+        {title || t.ui.serp.titlePlaceholder}
       </div>
       <div className="text-sm text-[#4d5156] mt-1 line-clamp-2" style={{ fontFamily: "Arial, sans-serif" }}>
-        {description || "Your meta description will appear here."}
+        {description || t.ui.serp.descPlaceholder}
       </div>
     </div>
   );
