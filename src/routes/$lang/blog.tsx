@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/i18n/context";
 import { supabase } from "@/integrations/supabase/client";
-import { hreflangLinks, ogLocale, pickLang } from "@/lib/seo/head";
+import { abs, hreflangLinks, ogLocale, pickLang, SITE_ORIGIN } from "@/lib/seo/head";
 import type { Lang } from "@/i18n/dictionaries";
 
 type PostRow = {
