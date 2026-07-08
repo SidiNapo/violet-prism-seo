@@ -3,7 +3,7 @@ import { lazy, Suspense, type ComponentType } from "react";
 import { useI18n } from "@/i18n/context";
 import { TOOLS, type ToolSlug } from "@/lib/tools-catalog";
 import { dictionaries, type Lang } from "@/i18n/dictionaries";
-import { hreflangLinks, ogLocale } from "@/lib/seo/head";
+import { abs, hreflangLinks, ogLocale, SITE_ORIGIN } from "@/lib/seo/head";
 import { ArrowRight } from "lucide-react";
 
 const COMPONENTS: Record<ToolSlug, ComponentType> = {
