@@ -184,6 +184,7 @@ function PostEditor({ post, onCancel, onSaved }: { post: Post; onCancel: () => v
   const { t } = useI18n();
   const [p, setP] = useState(post);
   const [saving, setSaving] = useState(false);
+  const [msg, setMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
 
   const set = (patch: Partial<Post>) => setP((old) => ({ ...old, ...patch }));
 
@@ -195,27 +196,52 @@ function PostEditor({ post, onCancel, onSaved }: { post: Post; onCancel: () => v
 
   const save = async (status?: "draft" | "published") => {
     setSaving(true);
+    setMsg(null);
     const reading = Math.max(1, Math.round(p.content.split(/\s+/).length / 220));
-    const payload = {
-      ...p,
-      status: status || p.status,
-      published_at: status === "published" && !p.published_at ? new Date().toISOString() : p.published_at,
-      reading_minutes: reading,
-    };
-    if (!payload.slug) payload.slug = "post-" + Date.now();
+    const slug = p.slug || "post-" + Date.now();
+    // Never send server-owned/counter columns from the client — let the DB own them.
+    const nextStatus = status || p.status;
+    const publishedAt = status === "published" && !p.published_at ? new Date().toISOString() : p.published_at;
+
+    let error: { message: string } | null = null;
     if (p.id) {
-      await supabase.from("posts").update(payload).eq("id", p.id);
+      const updatePayload = {
+        slug, lang: p.lang, title: p.title, excerpt: p.excerpt, content: p.content,
+        cover_image_url: p.cover_image_url, meta_title: p.meta_title,
+        meta_description: p.meta_description, keywords: p.keywords,
+        author_name: p.author_name, status: nextStatus,
+        published_at: publishedAt, reading_minutes: reading,
+      };
+      const res = await supabase.from("posts").update(updatePayload).eq("id", p.id);
+      error = res.error;
     } else {
-      const { id: _drop, ...insertPayload } = payload;
-      await supabase.from("posts").insert(insertPayload);
+      const insertPayload = {
+        slug, lang: p.lang, title: p.title, excerpt: p.excerpt, content: p.content,
+        cover_image_url: p.cover_image_url, meta_title: p.meta_title,
+        meta_description: p.meta_description, keywords: p.keywords,
+        author_name: p.author_name, status: nextStatus,
+        published_at: publishedAt, reading_minutes: reading,
+      };
+      const res = await supabase.from("posts").insert(insertPayload);
+      error = res.error;
     }
     setSaving(false);
+    if (error) {
+      setMsg({ kind: "err", text: `${t.admin.saveError} (${error.message})` });
+      return;
+    }
+    setMsg({ kind: "ok", text: t.admin.saved });
     onSaved();
   };
 
   const del = async () => {
     if (!p.id || !confirm(t.admin.confirmDelete)) return;
-    await supabase.from("posts").delete().eq("id", p.id);
+    setMsg(null);
+    const { error } = await supabase.from("posts").delete().eq("id", p.id);
+    if (error) {
+      setMsg({ kind: "err", text: `${t.admin.deleteError} (${error.message})` });
+      return;
+    }
     onSaved();
   };
 
@@ -223,12 +249,20 @@ function PostEditor({ post, onCancel, onSaved }: { post: Post; onCancel: () => v
     <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
       <div className="crystal-card p-6 space-y-3">
         <div className="flex items-center gap-2">
-          <button onClick={onCancel} className="text-xs text-mist">← Back</button>
+          <button onClick={onCancel} className="text-xs text-mist">← {t.admin.back}</button>
           <span className="flex-1" />
           <select value={p.lang} onChange={(e) => set({ lang: e.target.value })} className="rounded bg-void/60 border border-border px-2 py-1 text-xs font-mono">
             <option value="en">EN</option><option value="fr">FR</option><option value="ar">AR</option>
           </select>
         </div>
+        {msg && (
+          <div
+            role={msg.kind === "err" ? "alert" : "status"}
+            className={"text-xs rounded-lg px-3 py-2 " + (msg.kind === "err" ? "bg-danger-rose/15 text-danger-rose border border-danger-rose/30" : "bg-success-mint/15 text-success-mint border border-success-mint/30")}
+          >
+            {msg.text}
+          </div>
+        )}
         <F label="Title" v={p.title} on={(v) => set({ title: v })} onBlur={autoSlug} />
         <F label={t.admin.slug} v={p.slug} on={(v) => set({ slug: v })} mono />
         <F label={t.admin.excerpt} v={p.excerpt} on={(v) => set({ excerpt: v })} area rows={2} />
