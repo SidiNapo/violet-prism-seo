@@ -118,7 +118,7 @@ export function RobotsSitemapTool() {
               className="w-full rounded bg-void/60 border border-border px-2 py-1 text-xs font-mono"
               placeholder="https://example.com/page"
             />
-            <div className="text-xs text-mist">{urls.filter((u) => u.trim()).length} URLs{invalidUrls > 0 && ` — ${invalidUrls} invalid`}{urls.length > 50000 && " — over 50 000 limit"}</div>
+            <div className="text-xs text-mist">{urls.filter((u) => u.trim()).length} {t.ui.robots.urlsCount}{invalidUrls > 0 && ` — ${invalidUrls} ${t.ui.robots.invalidCount}`}{urls.length > 50000 && ` — ${t.ui.robots.overLimit}`}</div>
           </div>
           <div className="crystal-card p-6">
             <div className="flex justify-between mb-3">
