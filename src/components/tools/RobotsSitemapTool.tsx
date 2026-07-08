@@ -31,12 +31,12 @@ export function RobotsSitemapTool() {
   const warnings = useMemo(() => {
     const w: string[] = [];
     for (const r of rules) {
-      if (r.kind === "Disallow" && r.path.trim() === "/") w.push(`Blocks the entire site for "${r.agent}"`);
-      if (r.path.includes("*") && !r.path.startsWith("/")) w.push(`Wildcard path "${r.path}" should start with /`);
-      if (!r.path.startsWith("/")) w.push(`Path "${r.path}" is not absolute`);
+      if (r.kind === "Disallow" && r.path.trim() === "/") w.push(`${t.ui.robots.warnBlocksSite} "${r.agent}"`);
+      if (r.path.includes("*") && !r.path.startsWith("/")) w.push(`${t.ui.robots.warnWildcard}: "${r.path}"`);
+      if (!r.path.startsWith("/")) w.push(`${t.ui.robots.warnNotAbsolute}: "${r.path}"`);
     }
     return w;
-  }, [rules]);
+  }, [rules, t.ui.robots]);
 
   const sitemapXml = useMemo(() => {
     const items = urls
