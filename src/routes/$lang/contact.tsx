@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useI18n } from "@/i18n/context";
-import { hreflangLinks, ogLocale, pickLang } from "@/lib/seo/head";
+import { abs, hreflangLinks, ogLocale, pickLang, SITE_ORIGIN } from "@/lib/seo/head";
 import type { Lang } from "@/i18n/dictionaries";
 
 export const Route = createFileRoute("/$lang/contact")({
@@ -17,18 +17,21 @@ export const Route = createFileRoute("/$lang/contact")({
       fr: "Questions, partenariats ou retours sur la suite SEO algorithmique E-SeoMax ? Contactez l'équipe à hello@eseomax.app.",
       ar: "أسئلة، شراكات، أو ملاحظات حول مجموعة E-SeoMax الخوارزمية للـ SEO؟ تواصل مع الفريق عبر hello@eseomax.app.",
     });
+    const url = abs(`/${params.lang}/contact`);
     return {
       meta: [
         { title },
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
-        { property: "og:url", content: `/${params.lang}/contact` },
+        { property: "og:url", content: url },
         { property: "og:type", content: "website" },
         { property: "og:locale", content: ogLocale(lang) },
+        { property: "og:image", content: `${SITE_ORIGIN}/og-default.png` },
+        { name: "twitter:image", content: `${SITE_ORIGIN}/og-default.png` },
       ],
       links: [
-        { rel: "canonical", href: `/${params.lang}/contact` },
+        { rel: "canonical", href: url },
         ...hreflangLinks("/contact"),
       ],
     };
