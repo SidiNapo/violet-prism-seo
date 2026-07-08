@@ -41,6 +41,7 @@ export type Dict = {
   blog: {
     title: string; subtitle: string; readMore: string; readingTime: string; publishedOn: string;
     toc: string; share: string; related: string; empty: string; back: string; by: string;
+    featured: string; shareCopy: string; shareCopied: string; breadcrumbHome: string;
   };
   admin: {
     title: string; signIn: string; signOut: string; email: string; password: string;
