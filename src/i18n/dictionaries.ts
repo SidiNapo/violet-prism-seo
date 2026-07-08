@@ -50,9 +50,10 @@ export type Dict = {
     cover: string; metaTitle: string; metaDescription: string; keywords: string; status: string;
     save: string; publish: string; unpublish: string; delete: string; confirmDelete: string;
     edit: string; noPosts: string; loginFailed: string; forbidden: string;
+    back: string; saveError: string; deleteError: string; saved: string;
   };
   footer: { tagline: string; product: string; company: string; resources: string; rights: string };
-  common: { language: string; loading: string; notFoundTitle: string; notFoundBody: string; goHome: string; comingSoon: string };
+  common: { language: string; loading: string; notFoundTitle: string; notFoundBody: string; goHome: string; comingSoon: string; unknownTool: string; routeShattered: string };
 };
 
 const en: Dict = {
