@@ -3,26 +3,34 @@ import { useI18n } from "@/i18n/context";
 import { MiniSerpAnalyzer } from "@/components/site/MiniSerpAnalyzer";
 import { MagneticButton } from "@/components/site/MagneticButton";
 import { TOOLS } from "@/lib/tools-catalog";
-import { abs, hreflangLinks, SITE_ORIGIN } from "@/lib/seo/head";
+import { abs, hreflangLinks, ogLocale, SITE_ORIGIN } from "@/lib/seo/head";
+import { dictionaries, type Lang } from "@/i18n/dictionaries";
+import { supabase } from "@/integrations/supabase/client";
 import { ArrowRight, ShieldCheck, Zap, Infinity as InfinityIcon } from "lucide-react";
+
+type LatestPost = {
+  id: string; slug: string; title: string; excerpt: string;
+  cover_image_url: string | null; reading_minutes: number; published_at: string | null;
+};
 
 export const Route = createFileRoute("/$lang/")({
   component: Home,
+  loader: async ({ params }) => {
+    const { data } = await supabase
+      .from("posts")
+      .select("id,slug,title,excerpt,cover_image_url,reading_minutes,published_at")
+      .eq("lang", params.lang)
+      .eq("status", "published")
+      .order("published_at", { ascending: false })
+      .limit(3);
+    return { latest: (data as LatestPost[]) || [] };
+  },
   head: ({ params }) => {
-    const lang = params.lang;
-    const title =
-      lang === "fr"
-        ? "E-SeoMax — Intelligence SEO algorithmique"
-        : lang === "ar"
-          ? "E-SeoMax — ذكاء SEO خوارزمي"
-          : "E-SeoMax — Algorithmic SEO Intelligence";
-    const description =
-      lang === "fr"
-        ? "Huit outils SEO algorithmiques dans votre navigateur. Aperçu SERP, densité de mots-clés, audit de page, lisibilité et plus — sans API, sans limites."
-        : lang === "ar"
-          ? "ثمانية أدوات SEO خوارزمية تعمل في متصفحك. معاينة SERP وكثافة الكلمات المفتاحية وتدقيق الصفحة والمزيد — بدون واجهات برمجية ولا حدود."
-          : "Eight algorithmic SEO tools that run in your browser. SERP preview, keyword density, page auditor, readability and more — no APIs, no limits.";
-    const url = abs(`/${lang}`);
+    const lang = (["en", "fr", "ar"].includes(params.lang) ? params.lang : "en") as Lang;
+    const d = dictionaries[lang];
+    const title = d.home.metaTitle;
+    const description = d.home.metaDescription;
+    const url = abs(`/${params.lang}`);
     return {
       meta: [
         { title },
@@ -30,7 +38,7 @@ export const Route = createFileRoute("/$lang/")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:url", content: url },
-        { property: "og:locale", content: lang === "fr" ? "fr_FR" : lang === "ar" ? "ar_AR" : "en_US" },
+        { property: "og:locale", content: ogLocale(lang) },
         { property: "og:image", content: `${SITE_ORIGIN}/og-default.png` },
         { name: "twitter:image", content: `${SITE_ORIGIN}/og-default.png` },
       ],
@@ -54,6 +62,7 @@ export const Route = createFileRoute("/$lang/")({
     };
   },
 });
+
 
 
 function Home() {
