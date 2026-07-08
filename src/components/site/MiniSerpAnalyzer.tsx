@@ -52,7 +52,7 @@ export function MiniSerpAnalyzer() {
         </label>
 
         <label className="block">
-          <span className="text-xs text-mist">Description</span>
+          <span className="text-xs text-mist">{t.home.liveWidgetDescField}</span>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
