@@ -30,7 +30,7 @@ export function MiniSerpAnalyzer() {
 
       <div className="space-y-3">
         <label className="block">
-          <span className="text-xs text-mist">Title</span>
+          <span className="text-xs text-mist">{t.home.liveWidgetTitleField}</span>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
