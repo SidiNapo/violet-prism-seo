@@ -5,20 +5,8 @@ import { ScoreRing } from "./ScoreRing";
 
 export function MiniSerpAnalyzer() {
   const { t, lang } = useI18n();
-  const [title, setTitle] = useState(
-    lang === "fr"
-      ? "Guide ultime du SEO en 2026 : 12 techniques prouvées"
-      : lang === "ar"
-        ? "الدليل الشامل لـ SEO في 2026: 12 تقنية مثبتة"
-        : "Ultimate 2026 SEO Guide: 12 Proven Ranking Techniques",
-  );
-  const [description, setDescription] = useState(
-    lang === "fr"
-      ? "Découvrez les 12 techniques SEO qui font vraiment classer les pages en 2026. Guide gratuit, sans blabla."
-      : lang === "ar"
-        ? "اكتشف 12 تقنية SEO حقيقية ترفع ترتيب صفحاتك في 2026. دليل مجاني ومباشر."
-        : "Discover the 12 SEO techniques that actually rank pages in 2026. Free, no fluff, algorithmic.",
-  );
+  const [title, setTitle] = useState(t.home.exampleTitle);
+  const [description, setDescription] = useState(t.home.exampleDesc);
 
   const result = useMemo(() => scoreSerp({ title, description, lang }), [title, description, lang]);
 
