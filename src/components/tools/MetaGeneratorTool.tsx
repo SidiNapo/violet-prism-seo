@@ -105,13 +105,13 @@ export function MetaGeneratorTool() {
           </div>
         </div>
         <div className="crystal-card p-6">
-          <div className="text-xs font-mono uppercase tracking-widest text-mist mb-2">Facebook</div>
+          <div className="text-xs font-mono uppercase tracking-widest text-mist mb-2">{t.ui.meta.previewTitle}</div>
           <div className="bg-[#242526] rounded overflow-hidden text-white">
             {image && <img src={image} alt="" className="w-full h-40 object-cover" />}
             <div className="p-3">
-              <div className="text-[10px] uppercase text-gray-400">{url || "example.com"}</div>
-              <div className="text-sm font-semibold line-clamp-2">{title || "Your title"}</div>
-              <div className="text-xs text-gray-400 line-clamp-2 mt-0.5">{desc || "Your description"}</div>
+              <div className="text-[10px] uppercase text-gray-400">{url || t.ui.meta.previewExampleUrl}</div>
+              <div className="text-sm font-semibold line-clamp-2">{title || t.ui.meta.previewExampleTitle}</div>
+              <div className="text-xs text-gray-400 line-clamp-2 mt-0.5">{desc || t.ui.meta.previewExampleDesc}</div>
             </div>
           </div>
         </div>
