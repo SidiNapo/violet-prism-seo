@@ -16,21 +16,9 @@ export function SerpPreviewTool() {
   );
 
   const loadExample = () => {
-    setTitle(
-      lang === "fr"
-        ? "12 techniques SEO qui font vraiment classer en 2026"
-        : lang === "ar"
-          ? "12 تقنية SEO ترفع ترتيبك فعلاً في 2026"
-          : "12 SEO Techniques That Actually Rank Pages in 2026",
-    );
-    setDescription(
-      lang === "fr"
-        ? "Un guide gratuit, direct et algorithmique. Zéro blabla, uniquement ce qui fonctionne."
-        : lang === "ar"
-          ? "دليل مجاني ومباشر بلا حشو. فقط ما ينجح فعلاً."
-          : "A free, algorithmic guide. No fluff — only techniques that actually move the needle.",
-    );
-    setKeyword(lang === "fr" ? "seo 2026" : lang === "ar" ? "SEO 2026" : "seo 2026");
+    setTitle(t.ui.serp.exampleTitle);
+    setDescription(t.ui.serp.exampleDesc);
+    setKeyword(t.ui.serp.exampleKeyword);
   };
 
   return (
