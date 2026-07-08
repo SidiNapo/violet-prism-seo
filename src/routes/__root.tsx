@@ -8,25 +8,35 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { htmlDir, isValidLang } from "@/lib/seo/head";
+import { htmlDir, isValidLang, SITE_ORIGIN } from "@/lib/seo/head";
+import { dictionaries, type Lang } from "@/i18n/dictionaries";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
+function useShellLang(): Lang {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const seg = pathname.split("/")[1];
+  return isValidLang(seg) ? seg : "en";
+}
+
 function NotFoundComponent() {
+  const lang = useShellLang();
+  const t = dictionaries[lang].common;
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <div className="font-display text-7xl gradient-text">404</div>
-        <h1 className="mt-4 text-xl font-semibold">Off the grid</h1>
-        <p className="mt-2 text-sm text-mist">This route shattered into cubes.</p>
+        <h1 className="mt-4 text-xl font-semibold">{t.notFoundTitle}</h1>
+        <p className="mt-2 text-sm text-mist">{t.notFoundBody}</p>
         <div className="mt-6">
           <Link
-            to="/en"
+            to="/$lang"
+            params={{ lang }}
             className="inline-flex items-center justify-center rounded-full gradient-violet px-5 py-2 text-sm font-medium text-white"
           >
-            Go home
+            {t.goHome}
           </Link>
         </div>
       </div>
@@ -37,6 +47,8 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  const lang = useShellLang();
+  const t = dictionaries[lang].common;
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
@@ -44,8 +56,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold">This page didn't load</h1>
-        <p className="mt-2 text-sm text-mist">Something went wrong. Try again or head home.</p>
+        <h1 className="text-xl font-semibold">{t.notFoundTitle}</h1>
+        <p className="mt-2 text-sm text-mist">{t.notFoundBody}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
@@ -54,13 +66,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="inline-flex items-center justify-center rounded-full gradient-violet px-5 py-2 text-sm font-medium text-white"
           >
-            Try again
+            {t.loading}
           </button>
           <a
-            href="/en"
+            href={`/${lang}`}
             className="inline-flex items-center justify-center rounded-full border border-border px-5 py-2 text-sm font-medium"
           >
-            Go home
+            {t.goHome}
           </a>
         </div>
       </div>
@@ -87,17 +99,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "E-SeoMax" },
-      { property: "og:url", content: "https://e-seomax.com" },
+      { property: "og:url", content: SITE_ORIGIN },
       { property: "og:locale", content: "en_US" },
       { property: "og:locale:alternate", content: "fr_FR" },
-      { property: "og:locale:alternate", content: "ar" },
+      { property: "og:locale:alternate", content: "ar_AR" },
+      { property: "og:image", content: `${SITE_ORIGIN}/og-default.png` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "E-SeoMax — Algorithmic SEO Intelligence" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@eseomax" },
+      { name: "twitter:image", content: `${SITE_ORIGIN}/og-default.png` },
       { name: "theme-color", content: "#0a0014" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "apple-touch-icon", href: "/logo.png" },
       { rel: "preconnect", href: "https://api.fontshare.com" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
@@ -117,8 +135,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "Organization",
           name: "E-SeoMax",
-          url: "https://e-seomax.com",
-          logo: "https://e-seomax.com/favicon.ico",
+          url: SITE_ORIGIN,
+          logo: `${SITE_ORIGIN}/logo.png`,
           sameAs: [],
           description: "Algorithmic SEO intelligence platform with 8 tools running fully in-browser.",
         }),
@@ -129,7 +147,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "WebSite",
           name: "E-SeoMax",
-          url: "https://e-seomax.com",
+          url: SITE_ORIGIN,
           inLanguage: ["en", "fr", "ar"],
         }),
       },
@@ -146,9 +164,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const seg = pathname.split("/")[1];
-  const lang = isValidLang(seg) ? seg : "en";
+  const lang = useShellLang();
   const dir = htmlDir(lang);
   return (
     <html lang={lang} dir={dir} className="dark">
