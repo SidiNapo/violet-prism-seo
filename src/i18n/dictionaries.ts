@@ -166,6 +166,7 @@ const fr: Dict = {
     title: "Journal", subtitle: "Réflexions longues sur le SEO algorithmique.",
     readMore: "Lire", readingTime: "min de lecture", publishedOn: "Publié le",
     toc: "Sommaire", share: "Partager", related: "Similaires", empty: "Premier article bientôt.", back: "Retour au journal", by: "par",
+    featured: "À la une", shareCopy: "Copier le lien", shareCopied: "Lien copié", breadcrumbHome: "Accueil",
   },
   admin: {
     title: "Admin", signIn: "Se connecter", signOut: "Déconnexion", email: "Email", password: "Mot de passe",
