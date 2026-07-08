@@ -3,9 +3,18 @@ import type { Lang } from "@/i18n/dictionaries";
 export const SITE_ORIGIN = "https://e-seomax.com";
 export const SEO_LANGS: Lang[] = ["en", "fr", "ar"];
 
+/** Absolute URL for a site-relative path (or return as-is if already absolute). */
+export function abs(pathOrUrl: string): string {
+  if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
+  const p = pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`;
+  return `${SITE_ORIGIN}${p}`;
+}
+
 /**
  * Build hreflang alternate links for a given path (the part AFTER /$lang).
- * Pass "" for a lang root, "/blog", "/tools/serp-preview", etc.
+ * Use ONLY for routes whose paths match 1:1 across languages
+ * (home, /about, /contact, /tools, /tools/$slug, /blog list).
+ * For blog posts, build from real per-language sibling slugs — see hreflangFromSiblings.
  */
 export function hreflangLinks(pathAfterLang: string) {
   const tail = pathAfterLang && !pathAfterLang.startsWith("/") ? `/${pathAfterLang}` : pathAfterLang;
@@ -19,6 +28,34 @@ export function hreflangLinks(pathAfterLang: string) {
     hreflang: "x-default",
     href: `${SITE_ORIGIN}/en${tail}`,
   });
+  return links;
+}
+
+/**
+ * Build hreflang links from a real set of translated siblings.
+ * `siblings` is a list of { lang, slug } for published sibling posts (INCLUDING the current one).
+ * Emits alternates only for languages that actually have a sibling; x-default → English sibling if present.
+ */
+export function hreflangFromSiblings(
+  pathPrefix: "blog",
+  siblings: { lang: string; slug: string }[],
+) {
+  const links: { rel: string; hreflang: string; href: string }[] = [];
+  for (const s of siblings) {
+    links.push({
+      rel: "alternate",
+      hreflang: s.lang,
+      href: `${SITE_ORIGIN}/${s.lang}/${pathPrefix}/${s.slug}`,
+    });
+  }
+  const en = siblings.find((s) => s.lang === "en");
+  if (en) {
+    links.push({
+      rel: "alternate",
+      hreflang: "x-default",
+      href: `${SITE_ORIGIN}/en/${pathPrefix}/${en.slug}`,
+    });
+  }
   return links;
 }
 
