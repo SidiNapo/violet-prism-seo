@@ -3,26 +3,34 @@ import { useI18n } from "@/i18n/context";
 import { MiniSerpAnalyzer } from "@/components/site/MiniSerpAnalyzer";
 import { MagneticButton } from "@/components/site/MagneticButton";
 import { TOOLS } from "@/lib/tools-catalog";
-import { abs, hreflangLinks, SITE_ORIGIN } from "@/lib/seo/head";
+import { abs, hreflangLinks, ogLocale, SITE_ORIGIN } from "@/lib/seo/head";
+import { dictionaries, type Lang } from "@/i18n/dictionaries";
+import { supabase } from "@/integrations/supabase/client";
 import { ArrowRight, ShieldCheck, Zap, Infinity as InfinityIcon } from "lucide-react";
+
+type LatestPost = {
+  id: string; slug: string; title: string; excerpt: string;
+  cover_image_url: string | null; reading_minutes: number; published_at: string | null;
+};
 
 export const Route = createFileRoute("/$lang/")({
   component: Home,
+  loader: async ({ params }) => {
+    const { data } = await supabase
+      .from("posts")
+      .select("id,slug,title,excerpt,cover_image_url,reading_minutes,published_at")
+      .eq("lang", params.lang)
+      .eq("status", "published")
+      .order("published_at", { ascending: false })
+      .limit(3);
+    return { latest: (data as LatestPost[]) || [] };
+  },
   head: ({ params }) => {
-    const lang = params.lang;
-    const title =
-      lang === "fr"
-        ? "E-SeoMax — Intelligence SEO algorithmique"
-        : lang === "ar"
-          ? "E-SeoMax — ذكاء SEO خوارزمي"
-          : "E-SeoMax — Algorithmic SEO Intelligence";
-    const description =
-      lang === "fr"
-        ? "Huit outils SEO algorithmiques dans votre navigateur. Aperçu SERP, densité de mots-clés, audit de page, lisibilité et plus — sans API, sans limites."
-        : lang === "ar"
-          ? "ثمانية أدوات SEO خوارزمية تعمل في متصفحك. معاينة SERP وكثافة الكلمات المفتاحية وتدقيق الصفحة والمزيد — بدون واجهات برمجية ولا حدود."
-          : "Eight algorithmic SEO tools that run in your browser. SERP preview, keyword density, page auditor, readability and more — no APIs, no limits.";
-    const url = abs(`/${lang}`);
+    const lang = (["en", "fr", "ar"].includes(params.lang) ? params.lang : "en") as Lang;
+    const d = dictionaries[lang];
+    const title = d.home.metaTitle;
+    const description = d.home.metaDescription;
+    const url = abs(`/${params.lang}`);
     return {
       meta: [
         { title },
@@ -30,7 +38,7 @@ export const Route = createFileRoute("/$lang/")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:url", content: url },
-        { property: "og:locale", content: lang === "fr" ? "fr_FR" : lang === "ar" ? "ar_AR" : "en_US" },
+        { property: "og:locale", content: ogLocale(lang) },
         { property: "og:image", content: `${SITE_ORIGIN}/og-default.png` },
         { name: "twitter:image", content: `${SITE_ORIGIN}/og-default.png` },
       ],
@@ -56,8 +64,10 @@ export const Route = createFileRoute("/$lang/")({
 });
 
 
+
 function Home() {
   const { t, lang } = useI18n();
+  const { latest } = Route.useLoaderData() as { latest: LatestPost[] };
 
   return (
     <div className="relative">
@@ -179,23 +189,51 @@ function Home() {
         </div>
       </section>
 
-      {/* LATEST POSTS placeholder */}
+      {/* LATEST POSTS */}
       <section className="relative py-20">
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex items-end justify-between mb-8">
             <h2 className="font-display text-3xl md:text-4xl">{t.home.latestPostsTitle}</h2>
             <Link to={`/${lang}/blog`} className="text-sm text-amethyst-glow hover:underline">
-              {t.nav.blog} →
+              {t.home.latestPostsAll} →
             </Link>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="crystal-card p-6 min-h-52 flex items-end">
-                <div className="text-sm text-mist">{t.home.latestPostsEmpty}</div>
-              </div>
-            ))}
-          </div>
+          {latest.length === 0 ? (
+            <div className="grid gap-4 md:grid-cols-3">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="crystal-card p-6 min-h-52 flex items-end">
+                  <div className="text-sm text-mist">{t.home.latestPostsEmpty}</div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-3">
+              {latest.map((p) => (
+                <Link
+                  key={p.id}
+                  to={`/${lang}/blog/${p.slug}`}
+                  className="crystal-card crystal-card-hover p-6 block"
+                >
+                  {p.cover_image_url && (
+                    <img
+                      src={p.cover_image_url}
+                      alt={p.title}
+                      loading="lazy"
+                      width={600}
+                      height={200}
+                      className="w-full h-36 object-cover rounded-lg mb-4"
+                    />
+                  )}
+                  <div className="font-display text-lg line-clamp-2">{p.title}</div>
+                  <p className="mt-2 text-sm text-mist line-clamp-2">{p.excerpt}</p>
+                  <div className="mt-3 text-xs font-mono text-mist">
+                    {p.reading_minutes} {t.blog.readingTime}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>

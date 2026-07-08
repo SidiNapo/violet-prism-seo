@@ -34,7 +34,7 @@ export function ReadabilityTool() {
           <Row k={t.ui.score} v={r.label} />
         </div>
         <div className="crystal-card p-5">
-          <div className="text-xs font-mono uppercase tracking-widest text-mist mb-3">Sentence heatmap</div>
+          <div className="text-xs font-mono uppercase tracking-widest text-mist mb-3">{t.ui.readability.heatmap}</div>
           <div className="space-y-1 max-h-96 overflow-y-auto">
             {sentences.map((s, i) => {
               const len = tokenize(s, lang).length;

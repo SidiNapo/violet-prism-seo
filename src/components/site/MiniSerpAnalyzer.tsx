@@ -5,20 +5,8 @@ import { ScoreRing } from "./ScoreRing";
 
 export function MiniSerpAnalyzer() {
   const { t, lang } = useI18n();
-  const [title, setTitle] = useState(
-    lang === "fr"
-      ? "Guide ultime du SEO en 2026 : 12 techniques prouvées"
-      : lang === "ar"
-        ? "الدليل الشامل لـ SEO في 2026: 12 تقنية مثبتة"
-        : "Ultimate 2026 SEO Guide: 12 Proven Ranking Techniques",
-  );
-  const [description, setDescription] = useState(
-    lang === "fr"
-      ? "Découvrez les 12 techniques SEO qui font vraiment classer les pages en 2026. Guide gratuit, sans blabla."
-      : lang === "ar"
-        ? "اكتشف 12 تقنية SEO حقيقية ترفع ترتيب صفحاتك في 2026. دليل مجاني ومباشر."
-        : "Discover the 12 SEO techniques that actually rank pages in 2026. Free, no fluff, algorithmic.",
-  );
+  const [title, setTitle] = useState(t.home.exampleTitle);
+  const [description, setDescription] = useState(t.home.exampleDesc);
 
   const result = useMemo(() => scoreSerp({ title, description, lang }), [title, description, lang]);
 
@@ -36,13 +24,13 @@ export function MiniSerpAnalyzer() {
         </div>
         <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest text-success-mint bg-success-mint/10 border border-success-mint/30">
           <span className="h-1.5 w-1.5 rounded-full bg-success-mint animate-pulse" />
-          live
+          {t.home.liveWidgetLive}
         </span>
       </div>
 
       <div className="space-y-3">
         <label className="block">
-          <span className="text-xs text-mist">Title</span>
+          <span className="text-xs text-mist">{t.home.liveWidgetTitleField}</span>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -64,7 +52,7 @@ export function MiniSerpAnalyzer() {
         </label>
 
         <label className="block">
-          <span className="text-xs text-mist">Description</span>
+          <span className="text-xs text-mist">{t.home.liveWidgetDescField}</span>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}

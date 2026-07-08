@@ -31,12 +31,12 @@ export function RobotsSitemapTool() {
   const warnings = useMemo(() => {
     const w: string[] = [];
     for (const r of rules) {
-      if (r.kind === "Disallow" && r.path.trim() === "/") w.push(`Blocks the entire site for "${r.agent}"`);
-      if (r.path.includes("*") && !r.path.startsWith("/")) w.push(`Wildcard path "${r.path}" should start with /`);
-      if (!r.path.startsWith("/")) w.push(`Path "${r.path}" is not absolute`);
+      if (r.kind === "Disallow" && r.path.trim() === "/") w.push(`${t.ui.robots.warnBlocksSite} "${r.agent}"`);
+      if (r.path.includes("*") && !r.path.startsWith("/")) w.push(`${t.ui.robots.warnWildcard}: "${r.path}"`);
+      if (!r.path.startsWith("/")) w.push(`${t.ui.robots.warnNotAbsolute}: "${r.path}"`);
     }
     return w;
-  }, [rules]);
+  }, [rules, t.ui.robots]);
 
   const sitemapXml = useMemo(() => {
     const items = urls
@@ -118,7 +118,7 @@ export function RobotsSitemapTool() {
               className="w-full rounded bg-void/60 border border-border px-2 py-1 text-xs font-mono"
               placeholder="https://example.com/page"
             />
-            <div className="text-xs text-mist">{urls.filter((u) => u.trim()).length} URLs{invalidUrls > 0 && ` — ${invalidUrls} invalid`}{urls.length > 50000 && " — over 50 000 limit"}</div>
+            <div className="text-xs text-mist">{urls.filter((u) => u.trim()).length} {t.ui.robots.urlsCount}{invalidUrls > 0 && ` — ${invalidUrls} ${t.ui.robots.invalidCount}`}{urls.length > 50000 && ` — ${t.ui.robots.overLimit}`}</div>
           </div>
           <div className="crystal-card p-6">
             <div className="flex justify-between mb-3">

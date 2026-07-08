@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/i18n/context";
 import { supabase } from "@/integrations/supabase/client";
-import { abs, hreflangLinks, ogLocale, pickLang, SITE_ORIGIN } from "@/lib/seo/head";
+import { abs, hreflangLinks, ogLocale, SITE_ORIGIN } from "@/lib/seo/head";
+import { dictionaries } from "@/i18n/dictionaries";
 import type { Lang } from "@/i18n/dictionaries";
 
 type PostRow = {
@@ -22,16 +23,9 @@ export const Route = createFileRoute("/$lang/blog/")({
   },
   head: ({ params }) => {
     const lang = params.lang as Lang;
-    const title = pickLang(lang, {
-      en: "Journal — E-SeoMax",
-      fr: "Journal — E-SeoMax",
-      ar: "المجلة — E-SeoMax",
-    });
-    const description = pickLang(lang, {
-      en: "Long-form thinking on algorithmic SEO, on-page craft, and how search actually works — from the E-SeoMax team.",
-      fr: "Réflexions approfondies sur le SEO algorithmique, l'artisanat on-page et le fonctionnement réel de la recherche — par l'équipe E-SeoMax.",
-      ar: "مقالات مطوّلة حول SEO الخوارزمي وحرفة الصفحة وكيف يعمل البحث فعلياً — من فريق E-SeoMax.",
-    });
+    const d = dictionaries[lang] ?? dictionaries.en;
+    const title = d.blog.metaTitle;
+    const description = d.blog.metaDescription;
     const url = abs(`/${params.lang}/blog`);
     return {
       meta: [

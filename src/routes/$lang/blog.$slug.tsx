@@ -57,8 +57,9 @@ export const Route = createFileRoute("/$lang/blog/$slug")({
     const post = loaderData?.post;
     const siblings = loaderData?.siblings ?? [];
     if (!post) {
+      const d = { en: "Article not found — E-SeoMax", fr: "Article introuvable — E-SeoMax", ar: "المقال غير موجود — E-SeoMax" };
       return {
-        meta: [{ title: "Not found — E-SeoMax" }, { name: "robots", content: "noindex" }],
+        meta: [{ title: d[lang] ?? d.en }, { name: "robots", content: "noindex" }],
       };
     }
     const title = post.meta_title || `${post.title} — E-SeoMax`;

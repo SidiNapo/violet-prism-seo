@@ -16,21 +16,9 @@ export function SerpPreviewTool() {
   );
 
   const loadExample = () => {
-    setTitle(
-      lang === "fr"
-        ? "12 techniques SEO qui font vraiment classer en 2026"
-        : lang === "ar"
-          ? "12 تقنية SEO ترفع ترتيبك فعلاً في 2026"
-          : "12 SEO Techniques That Actually Rank Pages in 2026",
-    );
-    setDescription(
-      lang === "fr"
-        ? "Un guide gratuit, direct et algorithmique. Zéro blabla, uniquement ce qui fonctionne."
-        : lang === "ar"
-          ? "دليل مجاني ومباشر بلا حشو. فقط ما ينجح فعلاً."
-          : "A free, algorithmic guide. No fluff — only techniques that actually move the needle.",
-    );
-    setKeyword(lang === "fr" ? "seo 2026" : lang === "ar" ? "SEO 2026" : "seo 2026");
+    setTitle(t.ui.serp.exampleTitle);
+    setDescription(t.ui.serp.exampleDesc);
+    setKeyword(t.ui.serp.exampleKeyword);
   };
 
   return (
@@ -76,7 +64,7 @@ export function SerpPreviewTool() {
               </button>
             ))}
           </div>
-          <SerpMock title={title} description={description} device={device} />
+          <SerpMock title={title} description={description} device={device} t={t} />
         </div>
 
         <div className="crystal-card p-6">
@@ -125,16 +113,16 @@ function MeterRow({ label, value, max, unit }: { label: string; value: number; m
     </div>
   );
 }
-function SerpMock({ title, description, device }: { title: string; description: string; device: "desktop" | "mobile" }) {
+function SerpMock({ title, description, device, t }: { title: string; description: string; device: "desktop" | "mobile"; t: ReturnType<typeof useI18n>["t"] }) {
   const w = device === "desktop" ? "max-w-xl" : "max-w-xs";
   return (
     <div className={"bg-white text-black p-4 rounded-md " + w}>
-      <div className="text-xs text-[#5f6368]">example.com › page</div>
+      <div className="text-xs text-[#5f6368]">{t.ui.serp.exampleUrl}</div>
       <div className="text-[#1a0dab] text-lg leading-tight line-clamp-1" style={{ fontFamily: "Arial, sans-serif" }}>
-        {title || "Your page title"}
+        {title || t.ui.serp.titlePlaceholder}
       </div>
       <div className="text-sm text-[#4d5156] mt-1 line-clamp-2" style={{ fontFamily: "Arial, sans-serif" }}>
-        {description || "Your meta description will appear here."}
+        {description || t.ui.serp.descPlaceholder}
       </div>
     </div>
   );

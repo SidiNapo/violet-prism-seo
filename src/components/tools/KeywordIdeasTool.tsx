@@ -36,7 +36,7 @@ export function KeywordIdeasTool() {
       </div>
       <div className="space-y-4">
         {clusters.length === 0 ? (
-          <div className="crystal-card p-6 text-mist text-sm">← {t.ui.ideas.seedLabel}</div>
+          <div className="crystal-card p-6 text-mist text-sm">{t.ui.ideas.empty}</div>
         ) : (
           clusters.slice(0, 12).map((c) => (
             <div key={c.name} className="crystal-card p-5">
