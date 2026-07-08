@@ -67,6 +67,7 @@ export const Route = createFileRoute("/$lang/")({
 
 function Home() {
   const { t, lang } = useI18n();
+  const { latest } = Route.useLoaderData() as { latest: LatestPost[] };
 
   return (
     <div className="relative">
