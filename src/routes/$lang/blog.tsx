@@ -32,6 +32,7 @@ export const Route = createFileRoute("/$lang/blog")({
       fr: "Réflexions approfondies sur le SEO algorithmique, l'artisanat on-page et le fonctionnement réel de la recherche — par l'équipe E-SeoMax.",
       ar: "مقالات مطوّلة حول SEO الخوارزمي وحرفة الصفحة وكيف يعمل البحث فعلياً — من فريق E-SeoMax.",
     });
+    const url = abs(`/${params.lang}/blog`);
     return {
       meta: [
         { title },
@@ -39,11 +40,13 @@ export const Route = createFileRoute("/$lang/blog")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "website" },
-        { property: "og:url", content: `/${params.lang}/blog` },
+        { property: "og:url", content: url },
         { property: "og:locale", content: ogLocale(lang) },
+        { property: "og:image", content: `${SITE_ORIGIN}/og-default.png` },
+        { name: "twitter:image", content: `${SITE_ORIGIN}/og-default.png` },
       ],
       links: [
-        { rel: "canonical", href: `/${params.lang}/blog` },
+        { rel: "canonical", href: url },
         ...hreflangLinks("/blog"),
       ],
     };
