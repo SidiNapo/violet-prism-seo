@@ -9,7 +9,7 @@ type PostRow = {
   published_at: string | null; reading_minutes: number; author_name: string;
 };
 
-export const Route = createFileRoute("/$lang/blog")({
+export const Route = createFileRoute("/$lang/blog/")({
   component: BlogList,
   loader: async ({ params }) => {
     const { data } = await supabase
