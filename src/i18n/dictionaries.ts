@@ -13,8 +13,11 @@ export type Dict = {
     whyPrivate: { title: string; body: string };
     whyInstant: { title: string; body: string };
     whyUnlimited: { title: string; body: string };
-    latestPostsTitle: string; latestPostsEmpty: string;
-    liveWidgetTitle: string; liveWidgetTitlePlaceholder: string; liveWidgetDescPlaceholder: string; liveWidgetScore: string;
+    latestPostsTitle: string; latestPostsEmpty: string; latestPostsAll: string;
+    liveWidgetTitle: string; liveWidgetTitlePlaceholder: string; liveWidgetDescPlaceholder: string;
+    liveWidgetScore: string; liveWidgetLive: string; liveWidgetTitleField: string; liveWidgetDescField: string;
+    exampleTitle: string; exampleDesc: string;
+    metaTitle: string; metaDescription: string;
   };
   tools: Record<
     | "serp-preview" | "keyword-density" | "page-auditor" | "readability"
@@ -23,25 +26,40 @@ export type Dict = {
   >;
   toolsHub: {
     title: string; subtitle: string; badge: string; comingSoon: string;
-    searchPlaceholder: string; all: string;
+    searchPlaceholder: string; all: string; metaTitle: string; metaDescription: string;
     category: { "on-page": string; content: string; technical: string; "off-page": string };
   };
   ui: {
     input: string; results: string; howItWorks: string; copy: string; copied: string;
     clear: string; analyze: string; related: string; score: string; example: string;
-    serp: { titleLabel: string; descLabel: string; keywordLabel: string; desktop: string; mobile: string; over: string; under: string; ok: string };
+    serp: {
+      titleLabel: string; descLabel: string; keywordLabel: string; desktop: string; mobile: string;
+      over: string; under: string; ok: string;
+      titlePlaceholder: string; descPlaceholder: string;
+      exampleTitle: string; exampleDesc: string; exampleKeyword: string; exampleUrl: string;
+    };
     density: { textLabel: string; unigrams: string; bigrams: string; trigrams: string; word: string; count: string; freq: string; totalWords: string; unique: string; over: string; stopWords: string };
     audit: { htmlLabel: string; critical: string; warning: string; passed: string; fix: string; runAudit: string; pasteHtml: string };
-    readability: { textLabel: string; grade: string; ease: string; sentences: string; words: string; syllables: string; avgSentLen: string; passive: string };
-    meta: { titleField: string; descField: string; urlField: string; imageField: string; typeField: string; siteName: string; author: string; snippet: string; jsonldValid: string; jsonldInvalid: string };
-    robots: { addRule: string; agent: string; path: string; allow: string; disallow: string; sitemap: string; addUrl: string; urls: string; generate: string; lint: string };
+    readability: { textLabel: string; grade: string; ease: string; sentences: string; words: string; syllables: string; avgSentLen: string; passive: string; heatmap: string };
+    meta: {
+      titleField: string; descField: string; urlField: string; imageField: string; typeField: string;
+      siteName: string; author: string; snippet: string; jsonldValid: string; jsonldInvalid: string;
+      previewTitle: string; previewExampleUrl: string; previewExampleTitle: string; previewExampleDesc: string;
+    };
+    robots: {
+      addRule: string; agent: string; path: string; allow: string; disallow: string; sitemap: string;
+      addUrl: string; urls: string; generate: string; lint: string;
+      warnBlocksSite: string; warnWildcard: string; warnNotAbsolute: string;
+      urlsCount: string; invalidCount: string; overLimit: string;
+    };
     anchor: { pasteAnchors: string; hint: string; distribution: string; risk: string; recommendation: string; exact: string; partial: string; branded: string; naked: string; generic: string };
-    ideas: { seedLabel: string; generate: string; intent: string; questions: string; modifiers: string; clusters: string; export: string; informational: string; navigational: string; commercial: string; transactional: string };
+    ideas: { seedLabel: string; generate: string; intent: string; questions: string; modifiers: string; clusters: string; export: string; informational: string; navigational: string; commercial: string; transactional: string; empty: string };
   };
   blog: {
     title: string; subtitle: string; readMore: string; readingTime: string; publishedOn: string;
     toc: string; share: string; related: string; empty: string; back: string; by: string;
     featured: string; shareCopy: string; shareCopied: string; breadcrumbHome: string;
+    notFound: string; metaTitle: string; metaDescription: string;
   };
   admin: {
     title: string; signIn: string; signOut: string; email: string; password: string;
@@ -53,7 +71,7 @@ export type Dict = {
     back: string; saveError: string; deleteError: string; saved: string;
   };
   footer: { tagline: string; product: string; company: string; resources: string; rights: string };
-  common: { language: string; loading: string; notFoundTitle: string; notFoundBody: string; goHome: string; comingSoon: string; unknownTool: string; routeShattered: string };
+  common: { language: string; loading: string; notFoundTitle: string; notFoundBody: string; goHome: string; comingSoon: string; unknownTool: string; routeShattered: string; retry: string };
 };
 
 const en: Dict = {
@@ -68,9 +86,14 @@ const en: Dict = {
     whyPrivate: { title: "Private", body: "Your data never leaves the browser. Zero telemetry." },
     whyInstant: { title: "Instant", body: "Every result is computed in milliseconds." },
     whyUnlimited: { title: "Unlimited", body: "Use every tool as often as you want. Free, forever." },
-    latestPostsTitle: "From the journal", latestPostsEmpty: "First article coming soon.",
+    latestPostsTitle: "From the journal", latestPostsEmpty: "First article coming soon.", latestPostsAll: "All articles",
     liveWidgetTitle: "Live SERP analyzer", liveWidgetTitlePlaceholder: "Your page title…",
     liveWidgetDescPlaceholder: "Your meta description…", liveWidgetScore: "SEO score",
+    liveWidgetLive: "live", liveWidgetTitleField: "Title", liveWidgetDescField: "Description",
+    exampleTitle: "Ultimate 2026 SEO Guide: 12 Proven Ranking Techniques",
+    exampleDesc: "Discover the 12 SEO techniques that actually rank pages in 2026. Free, no fluff, algorithmic.",
+    metaTitle: "E-SeoMax — Algorithmic SEO Intelligence",
+    metaDescription: "Eight algorithmic SEO tools that run in your browser. SERP preview, keyword density, page auditor, readability and more — no APIs, no limits.",
   },
   tools: {
     "serp-preview": { name: "SERP Preview", tagline: "Pixel-accurate Google preview & scoring." },
@@ -86,25 +109,48 @@ const en: Dict = {
     title: "The Arsenal", subtitle: "Eight algorithmic tools. Runs locally. No APIs.",
     badge: "no API • runs locally", comingSoon: "Wiring up — available shortly.",
     searchPlaceholder: "Search tools…", all: "All",
+    metaTitle: "SEO Tools — E-SeoMax",
+    metaDescription: "Eight algorithmic SEO tools running fully in your browser: SERP preview, keyword density, page auditor, readability, meta generator, robots & sitemap, anchor audit, and keyword ideas.",
     category: { "on-page": "On-page", content: "Content", technical: "Technical", "off-page": "Off-page" },
   },
   ui: {
     input: "Input", results: "Results", howItWorks: "How it works", copy: "Copy", copied: "Copied",
     clear: "Clear", analyze: "Analyze", related: "Related tools", score: "Score", example: "Load example",
-    serp: { titleLabel: "Page title", descLabel: "Meta description", keywordLabel: "Focus keyword (optional)", desktop: "Desktop", mobile: "Mobile", over: "over limit", under: "under limit", ok: "within range" },
+    serp: {
+      titleLabel: "Page title", descLabel: "Meta description", keywordLabel: "Focus keyword (optional)",
+      desktop: "Desktop", mobile: "Mobile", over: "over limit", under: "under limit", ok: "within range",
+      titlePlaceholder: "Your page title", descPlaceholder: "Your meta description will appear here.",
+      exampleTitle: "12 SEO Techniques That Actually Rank Pages in 2026",
+      exampleDesc: "A free, algorithmic guide. No fluff — only techniques that actually move the needle.",
+      exampleKeyword: "seo 2026", exampleUrl: "example.com › page",
+    },
     density: { textLabel: "Paste your content", unigrams: "Unigrams", bigrams: "Bigrams", trigrams: "Trigrams", word: "Word", count: "Count", freq: "Density", totalWords: "Total words", unique: "Unique", over: "Over-optimization", stopWords: "Ignore stop words" },
     audit: { htmlLabel: "Paste full HTML", critical: "Critical", warning: "Warnings", passed: "Passed", fix: "Fix", runAudit: "Run audit", pasteHtml: "Paste HTML including <html>…</html>" },
-    readability: { textLabel: "Paste your text", grade: "Grade level", ease: "Reading ease", sentences: "Sentences", words: "Words", syllables: "Syllables", avgSentLen: "Avg. sentence length", passive: "Passive constructions" },
-    meta: { titleField: "Title", descField: "Description", urlField: "Canonical URL", imageField: "OG image URL", typeField: "Schema type", siteName: "Site name", author: "Author", snippet: "Copy-ready <head>", jsonldValid: "JSON-LD valid", jsonldInvalid: "JSON-LD invalid" },
-    robots: { addRule: "Add rule", agent: "User-agent", path: "Path", allow: "Allow", disallow: "Disallow", sitemap: "Sitemap URL", addUrl: "Add URL", urls: "URLs", generate: "Generate", lint: "Warnings" },
+    readability: { textLabel: "Paste your text", grade: "Grade level", ease: "Reading ease", sentences: "Sentences", words: "Words", syllables: "Syllables", avgSentLen: "Avg. sentence length", passive: "Passive constructions", heatmap: "Sentence heatmap" },
+    meta: {
+      titleField: "Title", descField: "Description", urlField: "Canonical URL", imageField: "OG image URL",
+      typeField: "Schema type", siteName: "Site name", author: "Author", snippet: "Copy-ready <head>",
+      jsonldValid: "JSON-LD valid", jsonldInvalid: "JSON-LD invalid",
+      previewTitle: "Social preview", previewExampleUrl: "example.com",
+      previewExampleTitle: "Your title", previewExampleDesc: "Your description",
+    },
+    robots: {
+      addRule: "Add rule", agent: "User-agent", path: "Path", allow: "Allow", disallow: "Disallow",
+      sitemap: "Sitemap URL", addUrl: "Add URL", urls: "URLs", generate: "Generate", lint: "Warnings",
+      warnBlocksSite: "Blocks the entire site for", warnWildcard: "Wildcard path should start with /",
+      warnNotAbsolute: "Path is not absolute", urlsCount: "URLs", invalidCount: "invalid", overLimit: "over 50 000 limit",
+    },
     anchor: { pasteAnchors: "Paste anchor texts (one per line)", hint: "Optional brand name for classification", distribution: "Distribution", risk: "Risk score", recommendation: "Recommendation", exact: "Exact match", partial: "Partial match", branded: "Branded", naked: "Naked URL", generic: "Generic" },
-    ideas: { seedLabel: "Seed keyword", generate: "Generate ideas", intent: "Intent", questions: "Questions", modifiers: "Modifiers", clusters: "Clusters", export: "Export CSV", informational: "Informational", navigational: "Navigational", commercial: "Commercial", transactional: "Transactional" },
+    ideas: { seedLabel: "Seed keyword", generate: "Generate ideas", intent: "Intent", questions: "Questions", modifiers: "Modifiers", clusters: "Clusters", export: "Export CSV", informational: "Informational", navigational: "Navigational", commercial: "Commercial", transactional: "Transactional", empty: "Enter a seed keyword to generate ideas." },
   },
   blog: {
     title: "Journal", subtitle: "Long-form thinking on algorithmic SEO.",
     readMore: "Read more", readingTime: "min read", publishedOn: "Published on",
     toc: "Table of contents", share: "Share", related: "Related", empty: "First article coming soon.", back: "Back to journal", by: "by",
     featured: "Featured", shareCopy: "Copy link", shareCopied: "Link copied", breadcrumbHome: "Home",
+    notFound: "Article not found — E-SeoMax",
+    metaTitle: "Journal — E-SeoMax",
+    metaDescription: "Long-form thinking on algorithmic SEO, on-page craft, and how search actually works — from the E-SeoMax team.",
   },
   admin: {
     title: "Admin", signIn: "Sign in", signOut: "Sign out", email: "Email", password: "Password",
@@ -117,7 +163,7 @@ const en: Dict = {
     back: "Back", saveError: "Save failed — you may not have permission.", deleteError: "Delete failed.", saved: "Saved.",
   },
   footer: { tagline: "Premium SEO intelligence. Powered by algorithms.", product: "Product", company: "Company", resources: "Resources", rights: "All rights reserved." },
-  common: { language: "Language", loading: "Loading…", notFoundTitle: "404 — Off the grid", notFoundBody: "The page you are looking for shattered into cubes.", goHome: "Go home", comingSoon: "Coming soon", unknownTool: "Unknown tool.", routeShattered: "Route shattered." },
+  common: { language: "Language", loading: "Loading…", notFoundTitle: "404 — Off the grid", notFoundBody: "The page you are looking for shattered into cubes.", goHome: "Go home", comingSoon: "Coming soon", unknownTool: "Unknown tool.", routeShattered: "Route shattered.", retry: "Try again" },
 };
 
 const fr: Dict = {
@@ -132,9 +178,14 @@ const fr: Dict = {
     whyPrivate: { title: "Privé", body: "Vos données ne quittent jamais le navigateur." },
     whyInstant: { title: "Instantané", body: "Chaque résultat est calculé en millisecondes." },
     whyUnlimited: { title: "Illimité", body: "Utilisez chaque outil autant que vous voulez, gratuitement." },
-    latestPostsTitle: "Du journal", latestPostsEmpty: "Premier article bientôt.",
+    latestPostsTitle: "Du journal", latestPostsEmpty: "Premier article bientôt.", latestPostsAll: "Tous les articles",
     liveWidgetTitle: "Analyseur SERP en direct", liveWidgetTitlePlaceholder: "Le titre de votre page…",
     liveWidgetDescPlaceholder: "Votre méta-description…", liveWidgetScore: "Score SEO",
+    liveWidgetLive: "en direct", liveWidgetTitleField: "Titre", liveWidgetDescField: "Description",
+    exampleTitle: "Guide ultime du SEO en 2026 : 12 techniques prouvées",
+    exampleDesc: "Découvrez les 12 techniques SEO qui font vraiment classer les pages en 2026. Guide gratuit, sans blabla.",
+    metaTitle: "E-SeoMax — Intelligence SEO algorithmique",
+    metaDescription: "Huit outils SEO algorithmiques dans votre navigateur. Aperçu SERP, densité de mots-clés, audit de page, lisibilité et plus — sans API, sans limites.",
   },
   tools: {
     "serp-preview": { name: "Aperçu SERP", tagline: "Aperçu Google au pixel près et notation." },
@@ -150,25 +201,48 @@ const fr: Dict = {
     title: "L'Arsenal", subtitle: "Huit outils algorithmiques. Exécution locale.",
     badge: "sans API • local", comingSoon: "Bientôt disponible.",
     searchPlaceholder: "Rechercher un outil…", all: "Tous",
+    metaTitle: "Outils SEO — E-SeoMax",
+    metaDescription: "Huit outils SEO algorithmiques dans votre navigateur : aperçu SERP, densité de mots-clés, audit de page, lisibilité, générateur de meta, robots & sitemap, audit d'ancres et idées de mots-clés.",
     category: { "on-page": "On-page", content: "Contenu", technical: "Technique", "off-page": "Off-page" },
   },
   ui: {
     input: "Entrée", results: "Résultats", howItWorks: "Comment ça marche", copy: "Copier", copied: "Copié",
     clear: "Effacer", analyze: "Analyser", related: "Outils liés", score: "Score", example: "Exemple",
-    serp: { titleLabel: "Titre de la page", descLabel: "Méta-description", keywordLabel: "Mot-clé (optionnel)", desktop: "Bureau", mobile: "Mobile", over: "trop long", under: "trop court", ok: "dans la plage" },
+    serp: {
+      titleLabel: "Titre de la page", descLabel: "Méta-description", keywordLabel: "Mot-clé (optionnel)",
+      desktop: "Bureau", mobile: "Mobile", over: "trop long", under: "trop court", ok: "dans la plage",
+      titlePlaceholder: "Titre de votre page", descPlaceholder: "Votre méta-description apparaîtra ici.",
+      exampleTitle: "12 techniques SEO qui font vraiment classer en 2026",
+      exampleDesc: "Un guide gratuit, direct et algorithmique. Zéro blabla, uniquement ce qui fonctionne.",
+      exampleKeyword: "seo 2026", exampleUrl: "exemple.com › page",
+    },
     density: { textLabel: "Collez votre contenu", unigrams: "Unigrammes", bigrams: "Bigrammes", trigrams: "Trigrammes", word: "Mot", count: "Occurrences", freq: "Densité", totalWords: "Total de mots", unique: "Uniques", over: "Sur-optimisation", stopWords: "Ignorer les mots vides" },
     audit: { htmlLabel: "Collez le HTML complet", critical: "Critique", warning: "Avertissements", passed: "Validés", fix: "Correction", runAudit: "Lancer l'audit", pasteHtml: "Collez le HTML incluant <html>…</html>" },
-    readability: { textLabel: "Collez votre texte", grade: "Niveau scolaire", ease: "Facilité de lecture", sentences: "Phrases", words: "Mots", syllables: "Syllabes", avgSentLen: "Longueur moyenne", passive: "Voix passive" },
-    meta: { titleField: "Titre", descField: "Description", urlField: "URL canonique", imageField: "Image OG", typeField: "Type Schema", siteName: "Nom du site", author: "Auteur", snippet: "<head> prêt à copier", jsonldValid: "JSON-LD valide", jsonldInvalid: "JSON-LD invalide" },
-    robots: { addRule: "Ajouter", agent: "User-agent", path: "Chemin", allow: "Allow", disallow: "Disallow", sitemap: "URL du sitemap", addUrl: "Ajouter URL", urls: "URLs", generate: "Générer", lint: "Avertissements" },
+    readability: { textLabel: "Collez votre texte", grade: "Niveau scolaire", ease: "Facilité de lecture", sentences: "Phrases", words: "Mots", syllables: "Syllabes", avgSentLen: "Longueur moyenne", passive: "Voix passive", heatmap: "Carte thermique des phrases" },
+    meta: {
+      titleField: "Titre", descField: "Description", urlField: "URL canonique", imageField: "Image OG",
+      typeField: "Type Schema", siteName: "Nom du site", author: "Auteur", snippet: "<head> prêt à copier",
+      jsonldValid: "JSON-LD valide", jsonldInvalid: "JSON-LD invalide",
+      previewTitle: "Aperçu social", previewExampleUrl: "exemple.com",
+      previewExampleTitle: "Votre titre", previewExampleDesc: "Votre description",
+    },
+    robots: {
+      addRule: "Ajouter", agent: "User-agent", path: "Chemin", allow: "Allow", disallow: "Disallow",
+      sitemap: "URL du sitemap", addUrl: "Ajouter URL", urls: "URLs", generate: "Générer", lint: "Avertissements",
+      warnBlocksSite: "Bloque tout le site pour", warnWildcard: "Le chemin joker doit commencer par /",
+      warnNotAbsolute: "Le chemin n'est pas absolu", urlsCount: "URLs", invalidCount: "invalides", overLimit: "au-delà de 50 000",
+    },
     anchor: { pasteAnchors: "Collez les ancres (une par ligne)", hint: "Nom de marque (optionnel)", distribution: "Répartition", risk: "Score de risque", recommendation: "Recommandation", exact: "Exacte", partial: "Partielle", branded: "Marque", naked: "URL nue", generic: "Générique" },
-    ideas: { seedLabel: "Mot-clé racine", generate: "Générer", intent: "Intention", questions: "Questions", modifiers: "Modificateurs", clusters: "Clusters", export: "Exporter CSV", informational: "Informationnel", navigational: "Navigationnel", commercial: "Commercial", transactional: "Transactionnel" },
+    ideas: { seedLabel: "Mot-clé racine", generate: "Générer", intent: "Intention", questions: "Questions", modifiers: "Modificateurs", clusters: "Clusters", export: "Exporter CSV", informational: "Informationnel", navigational: "Navigationnel", commercial: "Commercial", transactional: "Transactionnel", empty: "Entrez un mot-clé racine pour générer des idées." },
   },
   blog: {
     title: "Journal", subtitle: "Réflexions longues sur le SEO algorithmique.",
     readMore: "Lire", readingTime: "min de lecture", publishedOn: "Publié le",
     toc: "Sommaire", share: "Partager", related: "Similaires", empty: "Premier article bientôt.", back: "Retour au journal", by: "par",
     featured: "À la une", shareCopy: "Copier le lien", shareCopied: "Lien copié", breadcrumbHome: "Accueil",
+    notFound: "Article introuvable — E-SeoMax",
+    metaTitle: "Journal — E-SeoMax",
+    metaDescription: "Réflexions approfondies sur le SEO algorithmique, l'artisanat on-page et le fonctionnement réel de la recherche — par l'équipe E-SeoMax.",
   },
   admin: {
     title: "Admin", signIn: "Se connecter", signOut: "Déconnexion", email: "Email", password: "Mot de passe",
@@ -181,7 +255,7 @@ const fr: Dict = {
     back: "Retour", saveError: "Enregistrement échoué — permission refusée.", deleteError: "Suppression échouée.", saved: "Enregistré.",
   },
   footer: { tagline: "Intelligence SEO premium. Alimentée par des algorithmes.", product: "Produit", company: "Entreprise", resources: "Ressources", rights: "Tous droits réservés." },
-  common: { language: "Langue", loading: "Chargement…", notFoundTitle: "404 — Hors grille", notFoundBody: "La page recherchée s'est brisée en cubes.", goHome: "Accueil", comingSoon: "Bientôt", unknownTool: "Outil inconnu.", routeShattered: "Route brisée." },
+  common: { language: "Langue", loading: "Chargement…", notFoundTitle: "404 — Hors grille", notFoundBody: "La page recherchée s'est brisée en cubes.", goHome: "Accueil", comingSoon: "Bientôt", unknownTool: "Outil inconnu.", routeShattered: "Route brisée.", retry: "Réessayer" },
 };
 
 const ar: Dict = {
@@ -196,9 +270,14 @@ const ar: Dict = {
     whyPrivate: { title: "خصوصية", body: "بياناتك لا تغادر المتصفّح. صفر تتبّع." },
     whyInstant: { title: "فوريّة", body: "كل نتيجة تُحسب بالمللي ثانية." },
     whyUnlimited: { title: "لا محدودة", body: "استخدم كل أداة قدر ما تشاء. مجاناً." },
-    latestPostsTitle: "من اليوميّات", latestPostsEmpty: "أول مقال قريباً.",
+    latestPostsTitle: "من اليوميّات", latestPostsEmpty: "أول مقال قريباً.", latestPostsAll: "كل المقالات",
     liveWidgetTitle: "محلّل SERP الحيّ", liveWidgetTitlePlaceholder: "عنوان صفحتك…",
     liveWidgetDescPlaceholder: "وصف الميتا…", liveWidgetScore: "نتيجة SEO",
+    liveWidgetLive: "مباشر", liveWidgetTitleField: "العنوان", liveWidgetDescField: "الوصف",
+    exampleTitle: "الدليل الشامل لـ SEO في 2026: 12 تقنية مثبتة",
+    exampleDesc: "اكتشف 12 تقنية SEO حقيقية ترفع ترتيب صفحاتك في 2026. دليل مجاني ومباشر.",
+    metaTitle: "E-SeoMax — ذكاء SEO خوارزمي",
+    metaDescription: "ثمانية أدوات SEO خوارزمية تعمل في متصفحك. معاينة SERP وكثافة الكلمات المفتاحية وتدقيق الصفحة والمزيد — بدون واجهات برمجية ولا حدود.",
   },
   tools: {
     "serp-preview": { name: "معاينة SERP", tagline: "معاينة قوقل بدقة البكسل مع تقييم." },
@@ -214,25 +293,48 @@ const ar: Dict = {
     title: "الترسانة", subtitle: "ثمانية أدوات خوارزميّة. تعمل محلياً.",
     badge: "بلا واجهة • محلياً", comingSoon: "قريباً.",
     searchPlaceholder: "ابحث عن أداة…", all: "الكل",
+    metaTitle: "أدوات SEO — E-SeoMax",
+    metaDescription: "ثمانية أدوات SEO خوارزمية تعمل بالكامل في متصفحك: معاينة SERP، كثافة الكلمات، تدقيق الصفحة، قابلية القراءة، مولّد الوسوم، robots وsitemap، تدقيق الروابط، وأفكار الكلمات.",
     category: { "on-page": "على الصفحة", content: "المحتوى", technical: "تقني", "off-page": "خارج الصفحة" },
   },
   ui: {
     input: "المدخلات", results: "النتائج", howItWorks: "كيف تعمل", copy: "نسخ", copied: "تم النسخ",
     clear: "مسح", analyze: "تحليل", related: "أدوات مرتبطة", score: "النتيجة", example: "تحميل مثال",
-    serp: { titleLabel: "عنوان الصفحة", descLabel: "وصف الميتا", keywordLabel: "الكلمة المفتاحية (اختياري)", desktop: "سطح المكتب", mobile: "الجوّال", over: "تجاوز الحد", under: "أقل من الحد", ok: "ضمن النطاق" },
+    serp: {
+      titleLabel: "عنوان الصفحة", descLabel: "وصف الميتا", keywordLabel: "الكلمة المفتاحية (اختياري)",
+      desktop: "سطح المكتب", mobile: "الجوّال", over: "تجاوز الحد", under: "أقل من الحد", ok: "ضمن النطاق",
+      titlePlaceholder: "عنوان صفحتك", descPlaceholder: "سيظهر وصف الميتا هنا.",
+      exampleTitle: "12 تقنية SEO ترفع ترتيبك فعلاً في 2026",
+      exampleDesc: "دليل مجاني ومباشر بلا حشو. فقط ما ينجح فعلاً.",
+      exampleKeyword: "SEO 2026", exampleUrl: "example.com › page",
+    },
     density: { textLabel: "الصق المحتوى", unigrams: "أحاديّة", bigrams: "ثنائيّة", trigrams: "ثلاثيّة", word: "الكلمة", count: "التكرار", freq: "الكثافة", totalWords: "إجمالي الكلمات", unique: "فريدة", over: "إفراط في التحسين", stopWords: "تجاهل الكلمات الشائعة" },
     audit: { htmlLabel: "الصق كامل HTML", critical: "حرجة", warning: "تحذيرات", passed: "ناجحة", fix: "الحل", runAudit: "شغّل التدقيق", pasteHtml: "الصق HTML كاملاً" },
-    readability: { textLabel: "الصق النص", grade: "المستوى", ease: "سهولة القراءة", sentences: "الجمل", words: "الكلمات", syllables: "المقاطع", avgSentLen: "متوسط طول الجملة", passive: "المبني للمجهول" },
-    meta: { titleField: "العنوان", descField: "الوصف", urlField: "الرابط الأساسي", imageField: "صورة OG", typeField: "نوع Schema", siteName: "اسم الموقع", author: "المؤلف", snippet: "<head> جاهز للنسخ", jsonldValid: "JSON-LD صالح", jsonldInvalid: "JSON-LD غير صالح" },
-    robots: { addRule: "إضافة", agent: "User-agent", path: "المسار", allow: "Allow", disallow: "Disallow", sitemap: "رابط Sitemap", addUrl: "إضافة رابط", urls: "الروابط", generate: "توليد", lint: "تحذيرات" },
+    readability: { textLabel: "الصق النص", grade: "المستوى", ease: "سهولة القراءة", sentences: "الجمل", words: "الكلمات", syllables: "المقاطع", avgSentLen: "متوسط طول الجملة", passive: "المبني للمجهول", heatmap: "خريطة حرارية للجمل" },
+    meta: {
+      titleField: "العنوان", descField: "الوصف", urlField: "الرابط الأساسي", imageField: "صورة OG",
+      typeField: "نوع Schema", siteName: "اسم الموقع", author: "المؤلف", snippet: "<head> جاهز للنسخ",
+      jsonldValid: "JSON-LD صالح", jsonldInvalid: "JSON-LD غير صالح",
+      previewTitle: "معاينة اجتماعية", previewExampleUrl: "example.com",
+      previewExampleTitle: "عنوانك", previewExampleDesc: "وصفك",
+    },
+    robots: {
+      addRule: "إضافة", agent: "User-agent", path: "المسار", allow: "Allow", disallow: "Disallow",
+      sitemap: "رابط Sitemap", addUrl: "إضافة رابط", urls: "الروابط", generate: "توليد", lint: "تحذيرات",
+      warnBlocksSite: "يحجب الموقع بالكامل لـ", warnWildcard: "يجب أن يبدأ المسار الجامع بـ /",
+      warnNotAbsolute: "المسار ليس مطلقاً", urlsCount: "روابط", invalidCount: "غير صالحة", overLimit: "أكثر من 50000",
+    },
     anchor: { pasteAnchors: "الصق النصوص (واحد لكل سطر)", hint: "اسم العلامة (اختياري)", distribution: "التوزيع", risk: "درجة الخطر", recommendation: "توصية", exact: "مطابق", partial: "جزئي", branded: "علامة", naked: "رابط عاري", generic: "عام" },
-    ideas: { seedLabel: "الكلمة الجذر", generate: "توليد الأفكار", intent: "النيّة", questions: "أسئلة", modifiers: "معدّلات", clusters: "مجموعات", export: "تصدير CSV", informational: "معلوماتي", navigational: "تنقّلي", commercial: "تجاري", transactional: "معاملات" },
+    ideas: { seedLabel: "الكلمة الجذر", generate: "توليد الأفكار", intent: "النيّة", questions: "أسئلة", modifiers: "معدّلات", clusters: "مجموعات", export: "تصدير CSV", informational: "معلوماتي", navigational: "تنقّلي", commercial: "تجاري", transactional: "معاملات", empty: "أدخل كلمة جذر لتوليد الأفكار." },
   },
   blog: {
     title: "اليوميّات", subtitle: "أفكار مطوّلة حول SEO الخوارزمي.",
     readMore: "اقرأ", readingTime: "دقيقة", publishedOn: "نُشر في",
     toc: "الفهرس", share: "شارك", related: "مرتبطة", empty: "أول مقال قريباً.", back: "عودة", by: "بواسطة",
     featured: "مميّز", shareCopy: "نسخ الرابط", shareCopied: "تم نسخ الرابط", breadcrumbHome: "الرئيسية",
+    notFound: "المقال غير موجود — E-SeoMax",
+    metaTitle: "المجلة — E-SeoMax",
+    metaDescription: "مقالات مطوّلة حول SEO الخوارزمي وحرفة الصفحة وكيف يعمل البحث فعلياً — من فريق E-SeoMax.",
   },
   admin: {
     title: "الإدارة", signIn: "دخول", signOut: "خروج", email: "البريد", password: "كلمة السر",
@@ -245,7 +347,7 @@ const ar: Dict = {
     back: "رجوع", saveError: "فشل الحفظ — قد لا تملك الصلاحية.", deleteError: "فشل الحذف.", saved: "تم الحفظ.",
   },
   footer: { tagline: "ذكاء SEO فاخر مدعوم بالخوارزميات.", product: "المنتج", company: "الشركة", resources: "موارد", rights: "جميع الحقوق محفوظة." },
-  common: { language: "اللغة", loading: "جارٍ التحميل…", notFoundTitle: "404 — خارج الشبكة", notFoundBody: "الصفحة تحطّمت إلى مكعّبات.", goHome: "الرئيسية", comingSoon: "قريباً", unknownTool: "أداة غير معروفة.", routeShattered: "المسار تحطّم." },
+  common: { language: "اللغة", loading: "جارٍ التحميل…", notFoundTitle: "404 — خارج الشبكة", notFoundBody: "الصفحة تحطّمت إلى مكعّبات.", goHome: "الرئيسية", comingSoon: "قريباً", unknownTool: "أداة غير معروفة.", routeShattered: "المسار تحطّم.", retry: "أعد المحاولة" },
 };
 
 export const dictionaries: Record<Lang, Dict> = { en, fr, ar };
