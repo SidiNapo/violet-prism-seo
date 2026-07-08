@@ -103,6 +103,7 @@ const en: Dict = {
     title: "Journal", subtitle: "Long-form thinking on algorithmic SEO.",
     readMore: "Read more", readingTime: "min read", publishedOn: "Published on",
     toc: "Table of contents", share: "Share", related: "Related", empty: "First article coming soon.", back: "Back to journal", by: "by",
+    featured: "Featured", shareCopy: "Copy link", shareCopied: "Link copied", breadcrumbHome: "Home",
   },
   admin: {
     title: "Admin", signIn: "Sign in", signOut: "Sign out", email: "Email", password: "Password",
