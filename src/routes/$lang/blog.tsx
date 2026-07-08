@@ -88,7 +88,7 @@ function BlogList() {
           <div className="grid gap-4 md:grid-cols-3">
             {posts.slice(1).map((p) => (
               <Link key={p.id} to={`/${lang}/blog/${p.slug}`} className="crystal-card crystal-card-hover p-6 block">
-                {p.cover_image_url && <img src={p.cover_image_url} alt="" loading="lazy" width={600} height={240} className="w-full h-40 object-cover rounded-lg mb-4" />}
+                {p.cover_image_url && <img src={p.cover_image_url} alt={p.title} loading="lazy" width={600} height={240} className="w-full h-40 object-cover rounded-lg mb-4" />}
                 <div className="font-display text-xl">{p.title}</div>
                 <p className="mt-2 text-sm text-mist line-clamp-2">{p.excerpt}</p>
                 <div className="mt-3 text-xs font-mono text-mist">{p.reading_minutes} {t.blog.readingTime}</div>
