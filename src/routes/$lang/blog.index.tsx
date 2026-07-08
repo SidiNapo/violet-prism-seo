@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/i18n/context";
 import { supabase } from "@/integrations/supabase/client";
-import { hreflangLinks, ogLocale, pickLang } from "@/lib/seo/head";
+import { abs, hreflangLinks, ogLocale, pickLang, SITE_ORIGIN } from "@/lib/seo/head";
 import type { Lang } from "@/i18n/dictionaries";
 
 type PostRow = {
@@ -9,7 +9,7 @@ type PostRow = {
   published_at: string | null; reading_minutes: number; author_name: string;
 };
 
-export const Route = createFileRoute("/$lang/blog")({
+export const Route = createFileRoute("/$lang/blog/")({
   component: BlogList,
   loader: async ({ params }) => {
     const { data } = await supabase
@@ -32,6 +32,7 @@ export const Route = createFileRoute("/$lang/blog")({
       fr: "Réflexions approfondies sur le SEO algorithmique, l'artisanat on-page et le fonctionnement réel de la recherche — par l'équipe E-SeoMax.",
       ar: "مقالات مطوّلة حول SEO الخوارزمي وحرفة الصفحة وكيف يعمل البحث فعلياً — من فريق E-SeoMax.",
     });
+    const url = abs(`/${params.lang}/blog`);
     return {
       meta: [
         { title },
@@ -39,11 +40,13 @@ export const Route = createFileRoute("/$lang/blog")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "website" },
-        { property: "og:url", content: `/${params.lang}/blog` },
+        { property: "og:url", content: url },
         { property: "og:locale", content: ogLocale(lang) },
+        { property: "og:image", content: `${SITE_ORIGIN}/og-default.png` },
+        { name: "twitter:image", content: `${SITE_ORIGIN}/og-default.png` },
       ],
       links: [
-        { rel: "canonical", href: `/${params.lang}/blog` },
+        { rel: "canonical", href: url },
         ...hreflangLinks("/blog"),
       ],
     };
@@ -69,12 +72,12 @@ function BlogList() {
             <Link to={`/${lang}/blog/${posts[0].slug}`} className="crystal-card crystal-card-hover block p-0 overflow-hidden mb-8">
               <div className="grid md:grid-cols-[1.2fr_1fr]">
                 {posts[0].cover_image_url ? (
-                  <img src={posts[0].cover_image_url} alt="" loading="lazy" width={800} height={450} className="w-full h-64 md:h-full object-cover" />
+                  <img src={posts[0].cover_image_url} alt={posts[0].title} loading="lazy" width={800} height={450} className="w-full h-64 md:h-full object-cover" />
                 ) : (
                   <div className="w-full h-64 md:h-full aurora-mesh" />
                 )}
                 <div className="p-8">
-                  <div className="text-xs font-mono uppercase tracking-widest text-amethyst-glow">Featured</div>
+                  <div className="text-xs font-mono uppercase tracking-widest text-amethyst-glow">{t.blog.featured}</div>
                   <h2 className="font-display text-3xl mt-3">{posts[0].title}</h2>
                   <p className="mt-3 text-mist line-clamp-3">{posts[0].excerpt}</p>
                   <div className="mt-4 text-xs font-mono text-mist">{posts[0].reading_minutes} {t.blog.readingTime}</div>
@@ -85,7 +88,7 @@ function BlogList() {
           <div className="grid gap-4 md:grid-cols-3">
             {posts.slice(1).map((p) => (
               <Link key={p.id} to={`/${lang}/blog/${p.slug}`} className="crystal-card crystal-card-hover p-6 block">
-                {p.cover_image_url && <img src={p.cover_image_url} alt="" loading="lazy" width={600} height={240} className="w-full h-40 object-cover rounded-lg mb-4" />}
+                {p.cover_image_url && <img src={p.cover_image_url} alt={p.title} loading="lazy" width={600} height={240} className="w-full h-40 object-cover rounded-lg mb-4" />}
                 <div className="font-display text-xl">{p.title}</div>
                 <p className="mt-2 text-sm text-mist line-clamp-2">{p.excerpt}</p>
                 <div className="mt-3 text-xs font-mono text-mist">{p.reading_minutes} {t.blog.readingTime}</div>

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useI18n } from "@/i18n/context";
-import { hreflangLinks, ogLocale, pickLang } from "@/lib/seo/head";
+import { abs, hreflangLinks, ogLocale, pickLang, SITE_ORIGIN } from "@/lib/seo/head";
 import type { Lang } from "@/i18n/dictionaries";
 
 export const Route = createFileRoute("/$lang/about")({
@@ -17,18 +17,21 @@ export const Route = createFileRoute("/$lang/about")({
       fr: "E-SeoMax est une plateforme SEO trilingue et pointue. Huit outils algorithmiques qui s'exécutent dans votre navigateur — sans API, sans quotas, sans données sortant de votre machine.",
       ar: "E-SeoMax منصّة ذكاء SEO ثلاثية اللغات. ثمانية أدوات خوارزمية تعمل داخل متصفحك — بدون واجهات، بدون حصص، بدون خروج بياناتك من جهازك.",
     });
+    const url = abs(`/${params.lang}/about`);
     return {
       meta: [
         { title },
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
-        { property: "og:url", content: `/${params.lang}/about` },
+        { property: "og:url", content: url },
         { property: "og:type", content: "website" },
         { property: "og:locale", content: ogLocale(lang) },
+        { property: "og:image", content: `${SITE_ORIGIN}/og-default.png` },
+        { name: "twitter:image", content: `${SITE_ORIGIN}/og-default.png` },
       ],
       links: [
-        { rel: "canonical", href: `/${params.lang}/about` },
+        { rel: "canonical", href: url },
         ...hreflangLinks("/about"),
       ],
     };

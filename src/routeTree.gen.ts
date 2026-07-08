@@ -15,9 +15,9 @@ import { Route as LangRouteRouteImport } from './routes/$lang/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as LangContactRouteImport } from './routes/$lang/contact'
-import { Route as LangBlogRouteImport } from './routes/$lang/blog'
 import { Route as LangAboutRouteImport } from './routes/$lang/about'
 import { Route as LangToolsIndexRouteImport } from './routes/$lang/tools.index'
+import { Route as LangBlogIndexRouteImport } from './routes/$lang/blog.index'
 import { Route as LangToolsSlugRouteImport } from './routes/$lang/tools.$slug'
 import { Route as LangConsole7k9m2pRouteImport } from './routes/$lang/console.7k9m2p'
 import { Route as LangBlogSlugRouteImport } from './routes/$lang/blog.$slug'
@@ -52,11 +52,6 @@ const LangContactRoute = LangContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => LangRouteRoute,
 } as any)
-const LangBlogRoute = LangBlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => LangRouteRoute,
-} as any)
 const LangAboutRoute = LangAboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -65,6 +60,11 @@ const LangAboutRoute = LangAboutRouteImport.update({
 const LangToolsIndexRoute = LangToolsIndexRouteImport.update({
   id: '/tools/',
   path: '/tools/',
+  getParentRoute: () => LangRouteRoute,
+} as any)
+const LangBlogIndexRoute = LangBlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
   getParentRoute: () => LangRouteRoute,
 } as any)
 const LangToolsSlugRoute = LangToolsSlugRouteImport.update({
@@ -78,9 +78,9 @@ const LangConsole7k9m2pRoute = LangConsole7k9m2pRouteImport.update({
   getParentRoute: () => LangRouteRoute,
 } as any)
 const LangBlogSlugRoute = LangBlogSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => LangBlogRoute,
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => LangRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -89,12 +89,12 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/about': typeof LangAboutRoute
-  '/$lang/blog': typeof LangBlogRouteWithChildren
   '/$lang/contact': typeof LangContactRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/console/7k9m2p': typeof LangConsole7k9m2pRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
+  '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/tools/': typeof LangToolsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -102,12 +102,12 @@ export interface FileRoutesByTo {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/about': typeof LangAboutRoute
-  '/$lang/blog': typeof LangBlogRouteWithChildren
   '/$lang/contact': typeof LangContactRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/console/7k9m2p': typeof LangConsole7k9m2pRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
+  '/$lang/blog': typeof LangBlogIndexRoute
   '/$lang/tools': typeof LangToolsIndexRoute
 }
 export interface FileRoutesById {
@@ -117,12 +117,12 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$lang/about': typeof LangAboutRoute
-  '/$lang/blog': typeof LangBlogRouteWithChildren
   '/$lang/contact': typeof LangContactRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/blog/$slug': typeof LangBlogSlugRoute
   '/$lang/console/7k9m2p': typeof LangConsole7k9m2pRoute
   '/$lang/tools/$slug': typeof LangToolsSlugRoute
+  '/$lang/blog/': typeof LangBlogIndexRoute
   '/$lang/tools/': typeof LangToolsIndexRoute
 }
 export interface FileRouteTypes {
@@ -133,12 +133,12 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/$lang/about'
-    | '/$lang/blog'
     | '/$lang/contact'
     | '/$lang/'
     | '/$lang/blog/$slug'
     | '/$lang/console/7k9m2p'
     | '/$lang/tools/$slug'
+    | '/$lang/blog/'
     | '/$lang/tools/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -146,12 +146,12 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/$lang/about'
-    | '/$lang/blog'
     | '/$lang/contact'
     | '/$lang'
     | '/$lang/blog/$slug'
     | '/$lang/console/7k9m2p'
     | '/$lang/tools/$slug'
+    | '/$lang/blog'
     | '/$lang/tools'
   id:
     | '__root__'
@@ -160,12 +160,12 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/$lang/about'
-    | '/$lang/blog'
     | '/$lang/contact'
     | '/$lang/'
     | '/$lang/blog/$slug'
     | '/$lang/console/7k9m2p'
     | '/$lang/tools/$slug'
+    | '/$lang/blog/'
     | '/$lang/tools/'
   fileRoutesById: FileRoutesById
 }
@@ -220,13 +220,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangContactRouteImport
       parentRoute: typeof LangRouteRoute
     }
-    '/$lang/blog': {
-      id: '/$lang/blog'
-      path: '/blog'
-      fullPath: '/$lang/blog'
-      preLoaderRoute: typeof LangBlogRouteImport
-      parentRoute: typeof LangRouteRoute
-    }
     '/$lang/about': {
       id: '/$lang/about'
       path: '/about'
@@ -239,6 +232,13 @@ declare module '@tanstack/react-router' {
       path: '/tools'
       fullPath: '/$lang/tools/'
       preLoaderRoute: typeof LangToolsIndexRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
+    '/$lang/blog/': {
+      id: '/$lang/blog/'
+      path: '/blog'
+      fullPath: '/$lang/blog/'
+      preLoaderRoute: typeof LangBlogIndexRouteImport
       parentRoute: typeof LangRouteRoute
     }
     '/$lang/tools/$slug': {
@@ -257,43 +257,33 @@ declare module '@tanstack/react-router' {
     }
     '/$lang/blog/$slug': {
       id: '/$lang/blog/$slug'
-      path: '/$slug'
+      path: '/blog/$slug'
       fullPath: '/$lang/blog/$slug'
       preLoaderRoute: typeof LangBlogSlugRouteImport
-      parentRoute: typeof LangBlogRoute
+      parentRoute: typeof LangRouteRoute
     }
   }
 }
 
-interface LangBlogRouteChildren {
-  LangBlogSlugRoute: typeof LangBlogSlugRoute
-}
-
-const LangBlogRouteChildren: LangBlogRouteChildren = {
-  LangBlogSlugRoute: LangBlogSlugRoute,
-}
-
-const LangBlogRouteWithChildren = LangBlogRoute._addFileChildren(
-  LangBlogRouteChildren,
-)
-
 interface LangRouteRouteChildren {
   LangAboutRoute: typeof LangAboutRoute
-  LangBlogRoute: typeof LangBlogRouteWithChildren
   LangContactRoute: typeof LangContactRoute
   LangIndexRoute: typeof LangIndexRoute
+  LangBlogSlugRoute: typeof LangBlogSlugRoute
   LangConsole7k9m2pRoute: typeof LangConsole7k9m2pRoute
   LangToolsSlugRoute: typeof LangToolsSlugRoute
+  LangBlogIndexRoute: typeof LangBlogIndexRoute
   LangToolsIndexRoute: typeof LangToolsIndexRoute
 }
 
 const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangAboutRoute: LangAboutRoute,
-  LangBlogRoute: LangBlogRouteWithChildren,
   LangContactRoute: LangContactRoute,
   LangIndexRoute: LangIndexRoute,
+  LangBlogSlugRoute: LangBlogSlugRoute,
   LangConsole7k9m2pRoute: LangConsole7k9m2pRoute,
   LangToolsSlugRoute: LangToolsSlugRoute,
+  LangBlogIndexRoute: LangBlogIndexRoute,
   LangToolsIndexRoute: LangToolsIndexRoute,
 }
 

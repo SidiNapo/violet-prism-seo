@@ -3,7 +3,7 @@ import { lazy, Suspense, type ComponentType } from "react";
 import { useI18n } from "@/i18n/context";
 import { TOOLS, type ToolSlug } from "@/lib/tools-catalog";
 import { dictionaries, type Lang } from "@/i18n/dictionaries";
-import { hreflangLinks, ogLocale } from "@/lib/seo/head";
+import { abs, hreflangLinks, ogLocale, SITE_ORIGIN } from "@/lib/seo/head";
 import { ArrowRight } from "lucide-react";
 
 const COMPONENTS: Record<ToolSlug, ComponentType> = {
@@ -47,18 +47,21 @@ export const Route = createFileRoute("/$lang/tools/$slug")({
     const name = meta?.name ?? params.slug;
     const tagline = meta?.tagline ?? "";
     const title = `${name} — E-SeoMax`;
+    const url = abs(`/${params.lang}/tools/${params.slug}`);
     return {
       meta: [
         { title },
         { name: "description", content: tagline },
         { property: "og:title", content: title },
         { property: "og:description", content: tagline },
-        { property: "og:url", content: `/${params.lang}/tools/${params.slug}` },
+        { property: "og:url", content: url },
         { property: "og:type", content: "website" },
         { property: "og:locale", content: ogLocale(lang) },
+        { property: "og:image", content: `${SITE_ORIGIN}/og-default.png` },
+        { name: "twitter:image", content: `${SITE_ORIGIN}/og-default.png` },
       ],
       links: [
-        { rel: "canonical", href: `/${params.lang}/tools/${params.slug}` },
+        { rel: "canonical", href: url },
         ...hreflangLinks(`/tools/${params.slug}`),
       ],
       scripts: [
@@ -71,19 +74,26 @@ export const Route = createFileRoute("/$lang/tools/$slug")({
             description: tagline,
             applicationCategory: "SEOApplication",
             operatingSystem: "Any (web browser)",
-            url: `https://e-seomax.com/${params.lang}/tools/${params.slug}`,
+            url,
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
           }),
         },
       ],
     };
   },
-  notFoundComponent: () => (
-    <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-      <div className="font-display text-5xl gradient-text">404</div>
-      <p className="mt-3 text-mist">Unknown tool.</p>
-    </div>
-  ),
+  notFoundComponent: () => {
+    const lang = (typeof window !== "undefined"
+      ? (window.location.pathname.split("/")[1] as Lang)
+      : "en");
+    const l = (["en", "fr", "ar"].includes(lang) ? lang : "en") as Lang;
+    const t = dictionaries[l].common;
+    return (
+      <div className="mx-auto max-w-3xl px-4 py-24 text-center">
+        <div className="font-display text-5xl gradient-text">404</div>
+        <p className="mt-3 text-mist">{t.unknownTool}</p>
+      </div>
+    );
+  },
 });
 
 

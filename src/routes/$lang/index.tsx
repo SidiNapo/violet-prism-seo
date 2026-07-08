@@ -3,7 +3,7 @@ import { useI18n } from "@/i18n/context";
 import { MiniSerpAnalyzer } from "@/components/site/MiniSerpAnalyzer";
 import { MagneticButton } from "@/components/site/MagneticButton";
 import { TOOLS } from "@/lib/tools-catalog";
-import { hreflangLinks } from "@/lib/seo/head";
+import { abs, hreflangLinks, SITE_ORIGIN } from "@/lib/seo/head";
 import { ArrowRight, ShieldCheck, Zap, Infinity as InfinityIcon } from "lucide-react";
 
 export const Route = createFileRoute("/$lang/")({
@@ -22,17 +22,20 @@ export const Route = createFileRoute("/$lang/")({
         : lang === "ar"
           ? "ثمانية أدوات SEO خوارزمية تعمل في متصفحك. معاينة SERP وكثافة الكلمات المفتاحية وتدقيق الصفحة والمزيد — بدون واجهات برمجية ولا حدود."
           : "Eight algorithmic SEO tools that run in your browser. SERP preview, keyword density, page auditor, readability and more — no APIs, no limits.";
+    const url = abs(`/${lang}`);
     return {
       meta: [
         { title },
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
-        { property: "og:url", content: `/${lang}` },
+        { property: "og:url", content: url },
         { property: "og:locale", content: lang === "fr" ? "fr_FR" : lang === "ar" ? "ar_AR" : "en_US" },
+        { property: "og:image", content: `${SITE_ORIGIN}/og-default.png` },
+        { name: "twitter:image", content: `${SITE_ORIGIN}/og-default.png` },
       ],
       links: [
-        { rel: "canonical", href: `/${lang}` },
+        { rel: "canonical", href: url },
         ...hreflangLinks(""),
       ],
       scripts: [
@@ -42,7 +45,7 @@ export const Route = createFileRoute("/$lang/")({
             "@context": "https://schema.org",
             "@type": "WebSite",
             name: "E-SeoMax",
-            url: `https://e-seomax.com/${lang}`,
+            url,
             inLanguage: lang,
             description,
           }),

@@ -41,6 +41,7 @@ export type Dict = {
   blog: {
     title: string; subtitle: string; readMore: string; readingTime: string; publishedOn: string;
     toc: string; share: string; related: string; empty: string; back: string; by: string;
+    featured: string; shareCopy: string; shareCopied: string; breadcrumbHome: string;
   };
   admin: {
     title: string; signIn: string; signOut: string; email: string; password: string;
@@ -49,9 +50,10 @@ export type Dict = {
     cover: string; metaTitle: string; metaDescription: string; keywords: string; status: string;
     save: string; publish: string; unpublish: string; delete: string; confirmDelete: string;
     edit: string; noPosts: string; loginFailed: string; forbidden: string;
+    back: string; saveError: string; deleteError: string; saved: string;
   };
   footer: { tagline: string; product: string; company: string; resources: string; rights: string };
-  common: { language: string; loading: string; notFoundTitle: string; notFoundBody: string; goHome: string; comingSoon: string };
+  common: { language: string; loading: string; notFoundTitle: string; notFoundBody: string; goHome: string; comingSoon: string; unknownTool: string; routeShattered: string };
 };
 
 const en: Dict = {
@@ -102,6 +104,7 @@ const en: Dict = {
     title: "Journal", subtitle: "Long-form thinking on algorithmic SEO.",
     readMore: "Read more", readingTime: "min read", publishedOn: "Published on",
     toc: "Table of contents", share: "Share", related: "Related", empty: "First article coming soon.", back: "Back to journal", by: "by",
+    featured: "Featured", shareCopy: "Copy link", shareCopied: "Link copied", breadcrumbHome: "Home",
   },
   admin: {
     title: "Admin", signIn: "Sign in", signOut: "Sign out", email: "Email", password: "Password",
@@ -111,9 +114,10 @@ const en: Dict = {
     status: "Status", save: "Save", publish: "Publish", unpublish: "Unpublish", delete: "Delete",
     confirmDelete: "Delete this post permanently?", edit: "Edit", noPosts: "No posts yet — create your first.",
     loginFailed: "Login failed. Check credentials.", forbidden: "You are not an administrator.",
+    back: "Back", saveError: "Save failed — you may not have permission.", deleteError: "Delete failed.", saved: "Saved.",
   },
   footer: { tagline: "Premium SEO intelligence. Powered by algorithms.", product: "Product", company: "Company", resources: "Resources", rights: "All rights reserved." },
-  common: { language: "Language", loading: "Loading…", notFoundTitle: "404 — Off the grid", notFoundBody: "The page you are looking for shattered into cubes.", goHome: "Go home", comingSoon: "Coming soon" },
+  common: { language: "Language", loading: "Loading…", notFoundTitle: "404 — Off the grid", notFoundBody: "The page you are looking for shattered into cubes.", goHome: "Go home", comingSoon: "Coming soon", unknownTool: "Unknown tool.", routeShattered: "Route shattered." },
 };
 
 const fr: Dict = {
@@ -164,6 +168,7 @@ const fr: Dict = {
     title: "Journal", subtitle: "Réflexions longues sur le SEO algorithmique.",
     readMore: "Lire", readingTime: "min de lecture", publishedOn: "Publié le",
     toc: "Sommaire", share: "Partager", related: "Similaires", empty: "Premier article bientôt.", back: "Retour au journal", by: "par",
+    featured: "À la une", shareCopy: "Copier le lien", shareCopied: "Lien copié", breadcrumbHome: "Accueil",
   },
   admin: {
     title: "Admin", signIn: "Se connecter", signOut: "Déconnexion", email: "Email", password: "Mot de passe",
@@ -173,9 +178,10 @@ const fr: Dict = {
     status: "Statut", save: "Enregistrer", publish: "Publier", unpublish: "Dépublier", delete: "Supprimer",
     confirmDelete: "Supprimer cet article ?", edit: "Éditer", noPosts: "Aucun article — créez le premier.",
     loginFailed: "Connexion échouée.", forbidden: "Vous n'êtes pas administrateur.",
+    back: "Retour", saveError: "Enregistrement échoué — permission refusée.", deleteError: "Suppression échouée.", saved: "Enregistré.",
   },
   footer: { tagline: "Intelligence SEO premium. Alimentée par des algorithmes.", product: "Produit", company: "Entreprise", resources: "Ressources", rights: "Tous droits réservés." },
-  common: { language: "Langue", loading: "Chargement…", notFoundTitle: "404 — Hors grille", notFoundBody: "La page recherchée s'est brisée en cubes.", goHome: "Accueil", comingSoon: "Bientôt" },
+  common: { language: "Langue", loading: "Chargement…", notFoundTitle: "404 — Hors grille", notFoundBody: "La page recherchée s'est brisée en cubes.", goHome: "Accueil", comingSoon: "Bientôt", unknownTool: "Outil inconnu.", routeShattered: "Route brisée." },
 };
 
 const ar: Dict = {
@@ -226,6 +232,7 @@ const ar: Dict = {
     title: "اليوميّات", subtitle: "أفكار مطوّلة حول SEO الخوارزمي.",
     readMore: "اقرأ", readingTime: "دقيقة", publishedOn: "نُشر في",
     toc: "الفهرس", share: "شارك", related: "مرتبطة", empty: "أول مقال قريباً.", back: "عودة", by: "بواسطة",
+    featured: "مميّز", shareCopy: "نسخ الرابط", shareCopied: "تم نسخ الرابط", breadcrumbHome: "الرئيسية",
   },
   admin: {
     title: "الإدارة", signIn: "دخول", signOut: "خروج", email: "البريد", password: "كلمة السر",
@@ -235,9 +242,10 @@ const ar: Dict = {
     status: "الحالة", save: "حفظ", publish: "نشر", unpublish: "إلغاء النشر", delete: "حذف",
     confirmDelete: "حذف هذا المقال نهائياً؟", edit: "تحرير", noPosts: "لا توجد مقالات بعد.",
     loginFailed: "فشل الدخول.", forbidden: "لست مسؤولاً.",
+    back: "رجوع", saveError: "فشل الحفظ — قد لا تملك الصلاحية.", deleteError: "فشل الحذف.", saved: "تم الحفظ.",
   },
   footer: { tagline: "ذكاء SEO فاخر مدعوم بالخوارزميات.", product: "المنتج", company: "الشركة", resources: "موارد", rights: "جميع الحقوق محفوظة." },
-  common: { language: "اللغة", loading: "جارٍ التحميل…", notFoundTitle: "404 — خارج الشبكة", notFoundBody: "الصفحة تحطّمت إلى مكعّبات.", goHome: "الرئيسية", comingSoon: "قريباً" },
+  common: { language: "اللغة", loading: "جارٍ التحميل…", notFoundTitle: "404 — خارج الشبكة", notFoundBody: "الصفحة تحطّمت إلى مكعّبات.", goHome: "الرئيسية", comingSoon: "قريباً", unknownTool: "أداة غير معروفة.", routeShattered: "المسار تحطّم." },
 };
 
 export const dictionaries: Record<Lang, Dict> = { en, fr, ar };
