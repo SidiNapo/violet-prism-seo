@@ -72,12 +72,12 @@ function BlogList() {
             <Link to={`/${lang}/blog/${posts[0].slug}`} className="crystal-card crystal-card-hover block p-0 overflow-hidden mb-8">
               <div className="grid md:grid-cols-[1.2fr_1fr]">
                 {posts[0].cover_image_url ? (
-                  <img src={posts[0].cover_image_url} alt="" loading="lazy" width={800} height={450} className="w-full h-64 md:h-full object-cover" />
+                  <img src={posts[0].cover_image_url} alt={posts[0].title} loading="lazy" width={800} height={450} className="w-full h-64 md:h-full object-cover" />
                 ) : (
                   <div className="w-full h-64 md:h-full aurora-mesh" />
                 )}
                 <div className="p-8">
-                  <div className="text-xs font-mono uppercase tracking-widest text-amethyst-glow">Featured</div>
+                  <div className="text-xs font-mono uppercase tracking-widest text-amethyst-glow">{t.blog.featured}</div>
                   <h2 className="font-display text-3xl mt-3">{posts[0].title}</h2>
                   <p className="mt-3 text-mist line-clamp-3">{posts[0].excerpt}</p>
                   <div className="mt-4 text-xs font-mono text-mist">{posts[0].reading_minutes} {t.blog.readingTime}</div>
