@@ -71,7 +71,6 @@ function Admin() {
       <div className="crystal-card p-8">
         <h1 className="font-display text-2xl mb-3">{t.admin.forbidden}</h1>
         <p className="text-sm text-mist mb-4">Your user id: <code className="font-mono text-xs">{session.userId}</code></p>
-        <p className="text-sm text-mist mb-4">Grant admin role by running: <code className="block mt-2 font-mono text-xs bg-void/70 p-2 rounded text-start">INSERT INTO user_roles(user_id, role) VALUES ('{session.userId}', 'admin');</code></p>
         <button onClick={signOut} className="mt-3 border border-border rounded-full px-4 py-1 text-sm">{t.admin.signOut}</button>
       </div>
     </div>
