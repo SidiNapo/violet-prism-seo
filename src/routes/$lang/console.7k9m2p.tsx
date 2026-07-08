@@ -102,7 +102,7 @@ function AdminDashboard({ email, signOut, defaultLang }: { email: string; signOu
     setEditing({
       id: "", slug: "", lang: defaultLang, title: "", excerpt: "", content: "",
       cover_image_url: null, meta_title: null, meta_description: null,
-      keywords: [], status: "draft", views: 0, published_at: null, reading_minutes: 1,
+      keywords: [], author_name: "E-SeoMax", status: "draft", views: 0, published_at: null, reading_minutes: 1,
     });
     setTab("editor");
   };
