@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, notFound } from "@tanstack/react-router";
 import { I18nProvider } from "@/i18n/context";
-import { isLang } from "@/i18n/dictionaries";
+import { dictionaries, isLang } from "@/i18n/dictionaries";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { PrismParticles } from "@/components/site/PrismParticles";
@@ -11,14 +11,23 @@ export const Route = createFileRoute("/$lang")({
     if (!isLang(params.lang)) throw notFound();
   },
   component: LangLayout,
-  notFoundComponent: () => (
-    <div className="min-h-screen grid place-items-center px-4 text-center">
-      <div>
-        <div className="font-display text-6xl gradient-text">404</div>
-        <p className="mt-3 text-mist">Route shattered.</p>
+  notFoundComponent: () => {
+    // We're inside /$lang so params.lang is valid — read directly from the URL.
+    const lang =
+      typeof window !== "undefined"
+        ? (window.location.pathname.split("/")[1] as "en" | "fr" | "ar")
+        : "en";
+    const l = isLang(lang) ? lang : "en";
+    const t = dictionaries[l].common;
+    return (
+      <div className="min-h-screen grid place-items-center px-4 text-center">
+        <div>
+          <div className="font-display text-6xl gradient-text">404</div>
+          <p className="mt-3 text-mist">{t.routeShattered}</p>
+        </div>
       </div>
-    </div>
-  ),
+    );
+  },
 });
 
 function LangLayout() {
