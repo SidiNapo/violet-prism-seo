@@ -24,7 +24,7 @@ export function MiniSerpAnalyzer() {
         </div>
         <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest text-success-mint bg-success-mint/10 border border-success-mint/30">
           <span className="h-1.5 w-1.5 rounded-full bg-success-mint animate-pulse" />
-          live
+          {t.home.liveWidgetLive}
         </span>
       </div>
 
