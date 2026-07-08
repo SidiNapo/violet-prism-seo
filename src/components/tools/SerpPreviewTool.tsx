@@ -64,7 +64,7 @@ export function SerpPreviewTool() {
               </button>
             ))}
           </div>
-          <SerpMock title={title} description={description} device={device} />
+          <SerpMock title={title} description={description} device={device} t={t} />
         </div>
 
         <div className="crystal-card p-6">
