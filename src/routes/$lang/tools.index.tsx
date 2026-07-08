@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useI18n } from "@/i18n/context";
 import { TOOLS } from "@/lib/tools-catalog";
-import { hreflangLinks, ogLocale, pickLang } from "@/lib/seo/head";
+import { abs, hreflangLinks, ogLocale, pickLang, SITE_ORIGIN } from "@/lib/seo/head";
 import type { Lang } from "@/i18n/dictionaries";
 
 export const Route = createFileRoute("/$lang/tools/")({
@@ -18,18 +18,21 @@ export const Route = createFileRoute("/$lang/tools/")({
       fr: "Huit outils SEO algorithmiques dans votre navigateur : aperçu SERP, densité de mots-clés, audit de page, lisibilité, générateur de meta, robots & sitemap, audit d'ancres et idées de mots-clés.",
       ar: "ثمانية أدوات SEO خوارزمية تعمل بالكامل في متصفحك: معاينة SERP، كثافة الكلمات، تدقيق الصفحة، قابلية القراءة، مولّد الوسوم، robots وsitemap، تدقيق الروابط، وأفكار الكلمات.",
     });
+    const url = abs(`/${params.lang}/tools`);
     return {
       meta: [
         { title },
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
-        { property: "og:url", content: `/${params.lang}/tools` },
+        { property: "og:url", content: url },
         { property: "og:type", content: "website" },
         { property: "og:locale", content: ogLocale(lang) },
+        { property: "og:image", content: `${SITE_ORIGIN}/og-default.png` },
+        { name: "twitter:image", content: `${SITE_ORIGIN}/og-default.png` },
       ],
       links: [
-        { rel: "canonical", href: `/${params.lang}/tools` },
+        { rel: "canonical", href: url },
         ...hreflangLinks("/tools"),
       ],
       scripts: [
@@ -41,7 +44,7 @@ export const Route = createFileRoute("/$lang/tools/")({
             itemListElement: TOOLS.map((t, i) => ({
               "@type": "ListItem",
               position: i + 1,
-              url: `https://e-seomax.com/${params.lang}/tools/${t.slug}`,
+              url: `${SITE_ORIGIN}/${params.lang}/tools/${t.slug}`,
               name: t.slug,
             })),
           }),
