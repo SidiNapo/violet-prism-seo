@@ -5,6 +5,7 @@ import { ScoreRing } from "./ScoreRing";
 
 export function MiniSerpAnalyzer() {
   const { t, lang } = useI18n();
+  void lang;
   const [title, setTitle] = useState(t.home.exampleTitle);
   const [description, setDescription] = useState(t.home.exampleDesc);
 
