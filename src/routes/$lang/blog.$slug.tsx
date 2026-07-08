@@ -132,7 +132,7 @@ function PostNotFound() {
 
 function BlogDetail() {
   const { lang, slug } = Route.useParams();
-  const { post, siblings, related } = Route.useLoaderData();
+  const { post, siblings, related } = Route.useLoaderData() as { post: Post; siblings: Sibling[]; related: RelatedRow[] };
   const { t } = useI18n();
   const html = useMemo(() => renderMarkdown(post.content), [post.content]);
   const toc = useMemo(() => extractHeadings(post.content).filter((h) => h.level >= 2 && h.level <= 3), [post.content]);
