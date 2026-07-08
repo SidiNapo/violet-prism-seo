@@ -242,9 +242,10 @@ const ar: Dict = {
     status: "الحالة", save: "حفظ", publish: "نشر", unpublish: "إلغاء النشر", delete: "حذف",
     confirmDelete: "حذف هذا المقال نهائياً؟", edit: "تحرير", noPosts: "لا توجد مقالات بعد.",
     loginFailed: "فشل الدخول.", forbidden: "لست مسؤولاً.",
+    back: "رجوع", saveError: "فشل الحفظ — قد لا تملك الصلاحية.", deleteError: "فشل الحذف.", saved: "تم الحفظ.",
   },
   footer: { tagline: "ذكاء SEO فاخر مدعوم بالخوارزميات.", product: "المنتج", company: "الشركة", resources: "موارد", rights: "جميع الحقوق محفوظة." },
-  common: { language: "اللغة", loading: "جارٍ التحميل…", notFoundTitle: "404 — خارج الشبكة", notFoundBody: "الصفحة تحطّمت إلى مكعّبات.", goHome: "الرئيسية", comingSoon: "قريباً" },
+  common: { language: "اللغة", loading: "جارٍ التحميل…", notFoundTitle: "404 — خارج الشبكة", notFoundBody: "الصفحة تحطّمت إلى مكعّبات.", goHome: "الرئيسية", comingSoon: "قريباً", unknownTool: "أداة غير معروفة.", routeShattered: "المسار تحطّم." },
 };
 
 export const dictionaries: Record<Lang, Dict> = { en, fr, ar };
