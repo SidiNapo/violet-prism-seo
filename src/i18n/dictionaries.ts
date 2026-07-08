@@ -229,6 +229,7 @@ const ar: Dict = {
     title: "اليوميّات", subtitle: "أفكار مطوّلة حول SEO الخوارزمي.",
     readMore: "اقرأ", readingTime: "دقيقة", publishedOn: "نُشر في",
     toc: "الفهرس", share: "شارك", related: "مرتبطة", empty: "أول مقال قريباً.", back: "عودة", by: "بواسطة",
+    featured: "مميّز", shareCopy: "نسخ الرابط", shareCopied: "تم نسخ الرابط", breadcrumbHome: "الرئيسية",
   },
   admin: {
     title: "الإدارة", signIn: "دخول", signOut: "خروج", email: "البريد", password: "كلمة السر",
