@@ -82,7 +82,6 @@ function Admin() {
 
 function AdminDashboard({ email, signOut, defaultLang }: { email: string; signOut: () => void; defaultLang: Lang }) {
   const { t } = useI18n();
-  const nav = useNavigate();
   const [tab, setTab] = useState<"overview" | "posts" | "editor">("overview");
   const [posts, setPosts] = useState<Post[]>([]);
   const [editing, setEditing] = useState<Post | null>(null);
