@@ -7,7 +7,7 @@ import type { Lang } from "@/i18n/dictionaries";
 type Post = {
   id: string; slug: string; lang: string; title: string; excerpt: string; content: string;
   cover_image_url: string | null; meta_title: string | null; meta_description: string | null;
-  keywords: string[]; status: string; views: number; published_at: string | null; reading_minutes: number;
+  keywords: string[]; author_name: string; status: string; views: number; published_at: string | null; reading_minutes: number;
 };
 
 export const Route = createFileRoute("/$lang/console/7k9m2p")({
